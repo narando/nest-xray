@@ -7,4 +7,5 @@ tslint.json
 tsconfig.json
 
 # github
+.github
 renovate.json
