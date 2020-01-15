@@ -17,6 +17,8 @@ jobs:
         with:
           node-version: 12.x
 
+      - run: npm ci
+
       - run: npm install -g semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/release-notes-generator @semantic-release/npm
 
       # needed for npm publishing
