@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/narando/nest-xray/compare/v1.0.0...v1.0.1) (2020-01-25)
+
+
+### Bug Fixes
+
+* **ci:** fix version in package.json ([ff95014](https://github.com/narando/nest-xray/commit/ff95014cc10310520de7931840c95c208ec3b1b4))
+
 # 1.0.0 (2020-01-15)
 
 
