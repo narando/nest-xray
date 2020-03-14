@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/narando/nest-xray/compare/v1.0.1...v1.1.0) (2020-03-14)
+
+
+### Features
+
+* allow usages with Nestjs v7 ([13e19f0](https://github.com/narando/nest-xray/commit/13e19f0a6750b86034cde4946370a319af267404))
+
 ## [1.0.1](https://github.com/narando/nest-xray/compare/v1.0.0...v1.0.1) (2020-01-25)
 
 
