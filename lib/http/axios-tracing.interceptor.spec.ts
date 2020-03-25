@@ -5,13 +5,13 @@ import {
   AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
-  AxiosResponse
+  AxiosResponse,
 } from "axios";
 import { TracingService } from "../tracing.service";
 import {
   AxiosOnFulfilledInterceptor,
   AxiosOnRejectedInterceptor,
-  AxiosTracingInterceptor
+  AxiosTracingInterceptor,
 } from "./axios-tracing.interceptor";
 import { HEADER_TRACE_CONTEXT } from "./http-tracing.constants";
 
@@ -27,8 +27,8 @@ describe("AxiosTracingInterceptor", () => {
     axios = ({
       interceptors: {
         request: { use: jest.fn() },
-        response: { use: jest.fn() }
-      }
+        response: { use: jest.fn() },
+      },
     } as any) as AxiosInstance;
 
     testingModule = await Test.createTestingModule({
@@ -36,10 +36,10 @@ describe("AxiosTracingInterceptor", () => {
         AxiosTracingInterceptor,
         {
           provide: TracingService,
-          useFactory: () => ({})
+          useFactory: () => ({}),
         },
-        { provide: HttpService, useFactory: () => ({ axiosRef: axios }) }
-      ]
+        { provide: HttpService, useFactory: () => ({ axiosRef: axios }) },
+      ],
     }).compile();
 
     interceptor = testingModule.get<AxiosTracingInterceptor>(
@@ -111,7 +111,7 @@ describe("AxiosTracingInterceptor", () => {
       interceptorFn = interceptor.getRequestConfigInterceptor();
 
       config = {
-        headers: {}
+        headers: {},
       };
 
       subSegment = { id: "1337", name: "http-call" } as Subsegment;
@@ -152,8 +152,8 @@ describe("AxiosTracingInterceptor", () => {
         expect.objectContaining({
           headers: expect.objectContaining({
             [HEADER_TRACE_CONTEXT]:
-              "Root=1-5759e988-bd862e3fe1be46a994272793;Parent=1337;Sampled=1"
-          })
+              "Root=1-5759e988-bd862e3fe1be46a994272793;Parent=1337;Sampled=1",
+          }),
         })
       );
     });
@@ -172,7 +172,7 @@ describe("AxiosTracingInterceptor", () => {
         name: "http-call",
         addError: jest.fn(),
         addFaultFlag: jest.fn(),
-        close: jest.fn()
+        close: jest.fn(),
       } as any) as Subsegment;
       tracingService.getSubSegment = jest.fn().mockReturnValue(subSegment);
 
@@ -213,11 +213,11 @@ describe("AxiosTracingInterceptor", () => {
       response = {
         status: 200,
         headers: {
-          accept: "application/json"
+          accept: "application/json",
         },
         request: {
-          id: 321312 // Fake data for equality check
-        }
+          id: 321312, // Fake data for equality check
+        },
       } as AxiosResponse;
 
       subSegment = ({
@@ -226,7 +226,7 @@ describe("AxiosTracingInterceptor", () => {
         addRemoteRequestData: jest.fn(),
         addErrorFlag: jest.fn(),
         addFaultFlag: jest.fn(),
-        close: jest.fn()
+        close: jest.fn(),
       } as any) as Subsegment;
       tracingService.getSubSegment = jest.fn().mockReturnValue(subSegment);
     });
@@ -251,7 +251,7 @@ describe("AxiosTracingInterceptor", () => {
         response.request,
         expect.objectContaining({
           statusCode: 200,
-          headers: { accept: "application/json" }
+          headers: { accept: "application/json" },
         }),
         true
       );
@@ -304,16 +304,16 @@ describe("AxiosTracingInterceptor", () => {
         id: "1337",
         name: "http-call",
         addRemoteRequestData: jest.fn(),
-        close: jest.fn()
+        close: jest.fn(),
       } as any) as Subsegment;
       tracingService.getSubSegment = jest.fn().mockReturnValue(subSegment);
 
       error = new Error("Error in request") as AxiosError;
       error.request = {
-        id: 3123
+        id: 3123,
       };
       error.response = {
-        status: 419
+        status: 419,
       } as AxiosResponse;
     });
 

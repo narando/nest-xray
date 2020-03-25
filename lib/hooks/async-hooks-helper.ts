@@ -20,7 +20,7 @@ export class AsyncHooksHelper {
 
     return asyncHooks.createHook({
       init,
-      destroy
+      destroy,
     } as asyncHooks.HookCallbacks);
   }
 }

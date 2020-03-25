@@ -7,7 +7,7 @@ import { TracingConfig, XRayClient } from "./interfaces";
 import {
   TRACING_ASYNC_CONTEXT_SEGMENT,
   TRACING_ASYNC_CONTEXT_SUBSEGMENT,
-  XRAY_CLIENT
+  XRAY_CLIENT,
 } from "./tracing.constants";
 
 // WORKAROUND: AWSXRay initializes quite early after importing and the
@@ -29,7 +29,7 @@ export class TracingService implements OnModuleInit {
     this.config = {
       serviceName: options.serviceName || "example-service",
       rate: options.rate !== undefined ? options.rate : 1,
-      daemonAddress: options.daemonAddress || "172.17.0.1:2000"
+      daemonAddress: options.daemonAddress || "172.17.0.1:2000",
     }; // Set defaults
   }
 
@@ -47,7 +47,7 @@ export class TracingService implements OnModuleInit {
     // outside of EC2/ECS
     this.xrayClient.config([
       this.xrayClient.plugins.EC2Plugin,
-      this.xrayClient.plugins.ECSPlugin
+      this.xrayClient.plugins.ECSPlugin,
     ]);
 
     // Disable errors on missing context
@@ -100,11 +100,11 @@ export class TracingService implements OnModuleInit {
           host: "*",
           url_path: "/status",
           fixed_target: 0,
-          rate: 0
-        }
+          rate: 0,
+        },
       ],
       default: { fixed_target: 0, rate: this.config.rate },
-      version: 2
+      version: 2,
     };
   }
 }

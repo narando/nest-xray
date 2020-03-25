@@ -3,7 +3,7 @@ import {
   Global,
   MiddlewareConsumer,
   Module,
-  NestModule
+  NestModule,
 } from "@nestjs/common";
 import * as AWSXRay from "aws-xray-sdk";
 
@@ -19,21 +19,21 @@ import { TracingService } from "./tracing.service";
   providers: [
     {
       provide: TracingConfig,
-      useValue: new TracingConfig()
+      useValue: new TracingConfig(),
     },
     {
       provide: XRAY_CLIENT,
-      useValue: AWSXRay
+      useValue: AWSXRay,
     },
-    TracingService
+    TracingService,
   ],
-  exports: [TracingService]
+  exports: [TracingService],
 })
 export class TracingModule implements NestModule {
   public static forRoot(options: TracingConfig): DynamicModule {
     return {
       module: TracingModule,
-      providers: [{ provide: TracingConfig, useValue: options }]
+      providers: [{ provide: TracingConfig, useValue: options }],
     };
   }
 

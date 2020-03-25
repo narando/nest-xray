@@ -3,13 +3,13 @@ import {
   HttpModule,
   HttpModuleAsyncOptions,
   HttpService,
-  Module
+  Module,
 } from "@nestjs/common";
 import { AxiosTracingInterceptor } from "./axios-tracing.interceptor";
 
 @Module({
   providers: [HttpService, AxiosTracingInterceptor],
-  exports: [HttpService]
+  exports: [HttpService],
 })
 export class HttpTracingModule {
   public static registerAsync(options: HttpModuleAsyncOptions): DynamicModule {
@@ -17,7 +17,7 @@ export class HttpTracingModule {
 
     return {
       ...httpModule,
-      module: HttpTracingModule
+      module: HttpTracingModule,
     };
   }
 }
