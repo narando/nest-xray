@@ -6,7 +6,7 @@ import { TracingConfig, XRayClient } from "./interfaces";
 import {
   TRACING_ASYNC_CONTEXT_SEGMENT,
   TRACING_ASYNC_CONTEXT_SUBSEGMENT,
-  XRAY_CLIENT
+  XRAY_CLIENT,
 } from "./tracing.constants";
 import { TracingService } from "./tracing.service";
 
@@ -23,19 +23,19 @@ describe("TracingService", () => {
         TracingService,
         {
           provide: XRAY_CLIENT,
-          useFactory: () => ({ middleware: {}, plugins: {}, express: {} })
+          useFactory: () => ({ middleware: {}, plugins: {}, express: {} }),
         },
         {
           provide: AsyncContext,
-          useFactory: () => ({})
+          useFactory: () => ({}),
         },
         {
           provide: TracingConfig,
           useFactory: () => ({
-            serviceName: "tracing-service-test"
-          })
-        }
-      ]
+            serviceName: "tracing-service-test",
+          }),
+        },
+      ],
     }).compile();
 
     tracingService = testingModule.get<TracingService>(TracingService);
@@ -181,7 +181,7 @@ describe("TracingService", () => {
     beforeEach(() => {
       rootSegment = {
         id: "1337",
-        trace_id: "1-5759e988-bd862e3fe1be46a994272793"
+        trace_id: "1-5759e988-bd862e3fe1be46a994272793",
       } as Segment;
       subSegment = { id: "3117" } as Subsegment;
 
@@ -235,7 +235,7 @@ describe("TracingService", () => {
     it("should return the created subsegment", () => {
       const subSegment = {
         id: 1337,
-        name: "testing-segment"
+        name: "testing-segment",
       };
       rootSegment.addNewSubsegment = jest.fn().mockReturnValue(subSegment);
 

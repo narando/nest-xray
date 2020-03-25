@@ -38,10 +38,10 @@ export class TracingMiddleware implements NestMiddleware {
     const {
       segment: {
         http: {
-          request: { url }
-        }
+          request: { url },
+        },
       },
-      originalUrl
+      originalUrl,
     } = req;
 
     let patchedURL = url;

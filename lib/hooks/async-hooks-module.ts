@@ -6,9 +6,9 @@ import { AsyncContext } from "./async-context";
   providers: [
     {
       provide: AsyncContext,
-      useValue: AsyncContext.getInstance()
-    }
+      useValue: AsyncContext.getInstance(),
+    },
   ],
-  exports: [AsyncContext]
+  exports: [AsyncContext],
 })
 export class AsyncHooksModule {}

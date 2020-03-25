@@ -16,10 +16,10 @@ describe("TracingMiddleware", () => {
         {
           provide: TracingService,
           useFactory: () => ({
-            tracingMiddleware: () => xrayMiddleware
-          })
-        }
-      ]
+            tracingMiddleware: () => xrayMiddleware,
+          }),
+        },
+      ],
     }).compile();
 
     tracingMiddleware = module.get<TracingMiddleware>(TracingMiddleware);
@@ -40,9 +40,9 @@ describe("TracingMiddleware", () => {
       req = {
         segment: {
           id: 1337,
-          http: { request: { url: "https://example.com/" } }
+          http: { request: { url: "https://example.com/" } },
         },
-        originalUrl: "/path"
+        originalUrl: "/path",
       };
       res = {};
       next = jest.fn();
@@ -62,13 +62,13 @@ describe("TracingMiddleware", () => {
     });
 
     it("should patch the segment http url", async () => {
-      await new Promise(resolve => tracingMiddleware.use(req, res, resolve));
+      await new Promise((resolve) => tracingMiddleware.use(req, res, resolve));
 
       expect(req.segment.http.request.url).toEqual("https://example.com/path");
     });
 
     it("should persist the generated segment", async () => {
-      await new Promise(resolve => tracingMiddleware.use(req, res, resolve));
+      await new Promise((resolve) => tracingMiddleware.use(req, res, resolve));
 
       expect(tracingService.setRootSegment).toHaveBeenCalledTimes(1);
       expect(tracingService.setRootSegment).toHaveBeenCalledWith(req.segment);

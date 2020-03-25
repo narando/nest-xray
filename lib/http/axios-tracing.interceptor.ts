@@ -33,7 +33,7 @@ export class AxiosTracingInterceptor implements OnModuleInit {
   > {
     // Add Info to Subsegment
     // Persist Subsegment to Async context
-    return config => {
+    return (config) => {
       // Create Subsegment
       const subSegment = this.tracingService.createSubSegment("http-call");
       this.tracingService.setSubSegment(subSegment);
@@ -50,7 +50,7 @@ export class AxiosTracingInterceptor implements OnModuleInit {
     // Cause: Networking Error
     // Add error to Subsegment
     // Close Subsegment
-    return error => {
+    return (error) => {
       const subSegment = this.tracingService.getSubSegment();
 
       if (subSegment) {
@@ -68,7 +68,7 @@ export class AxiosTracingInterceptor implements OnModuleInit {
   > {
     // Add response code to Subsegment
     // Close Subsegment
-    return response => {
+    return (response) => {
       const subSegment = this.tracingService.getSubSegment();
 
       if (subSegment) {
@@ -76,7 +76,7 @@ export class AxiosTracingInterceptor implements OnModuleInit {
           response.request,
           {
             statusCode: response.status,
-            headers: response.headers
+            headers: response.headers,
           } as IncomingMessage,
           true
         );
@@ -106,14 +106,14 @@ export class AxiosTracingInterceptor implements OnModuleInit {
     // Non 2xx Status Code
     // Add error to Subsegment
     // Close Subsegment
-    return error => {
+    return (error) => {
       const subSegment = this.tracingService.getSubSegment();
 
       if (subSegment) {
         if (error.request && error.response) {
           const request = error.request as ClientRequest;
           const response = {
-            statusCode: error.response.status
+            statusCode: error.response.status,
           } as IncomingMessage;
 
           subSegment.addRemoteRequestData(request, response, true);
