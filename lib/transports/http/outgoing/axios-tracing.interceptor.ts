@@ -2,7 +2,7 @@ import { HttpService, Injectable, OnModuleInit } from "@nestjs/common";
 import { getCauseTypeFromHttpStatus } from "aws-xray-sdk-core/lib/utils";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ClientRequest, IncomingMessage } from "http";
-import { TracingService } from "../tracing.service";
+import { TracingService } from "../../../core";
 import { HEADER_TRACE_CONTEXT } from "./http-tracing.constants";
 
 export type AxiosOnFulfilledInterceptor<T> = (value: T) => T | Promise<T>;

@@ -7,7 +7,7 @@ import {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
-import { TracingService } from "../tracing.service";
+import { TracingService } from "../../../core";
 import {
   AxiosOnFulfilledInterceptor,
   AxiosOnRejectedInterceptor,

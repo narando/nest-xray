@@ -4,9 +4,10 @@ This module implements [Distributed Tracing](https://opentracing.io/docs/overvie
 
 ## Features
 
-- Automatic tracing for incoming HTTP requests
-- Automatic tracing for outgoing HTTP requests
-- Manual create new Subsegments to trace custom functions
+- Automatic tracing
+  - For incoming http requests
+  - For outgoing http requests
+- Manually create new Subsegments to trace custom functions
 
 ## Usage
 
@@ -26,14 +27,20 @@ Register the `TracingModule` with your app module:
 import { TracingModule } from "@narando/nest-xray";
 
 @Module({
-  imports: [TracingModule.forRoot({ serviceName: "your-service-name" })]
+  imports: [TracingModule.forRoot({ serviceName: "your-service-name" })],
 })
 export class AppModule {}
 ```
 
-Incoming HTTP requests are now automatically traced.
+### Transports
 
-### HTTP Client
+#### HTTP
+
+##### Incoming Requests
+
+Incoming Requests are traced automatically.
+
+##### Outgoing Requests (HttpService)
 
 If you use the [`HttpModule`](https://docs.nestjs.com/techniques/http-module), you can use this module to auto-trace outgoing HTTP requests.
 
@@ -41,7 +48,7 @@ Replace all usages of `HttpModule` with `HttpTracingModule`, and keep the same c
 
 ```diff
 - import { HttpModule } from "@nestjs/common"
-+ import { HttpTracingModule } from "@narando/xray-tracing"
++ import { HttpTracingModule } from "@narando/nest-xray"
 
  @Module({
    imports: [

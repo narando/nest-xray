@@ -1,5 +1,6 @@
-export * from "./http";
-export * from "./interfaces";
+export { TracingService } from "./core";
+export { TracingConfig } from "./core/interfaces";
 
-export * from "./tracing.module";
-export * from "./tracing.service";
+export { HttpTracingModule } from "./transports/http";
+
+export { TracingModule } from "./tracing.module";

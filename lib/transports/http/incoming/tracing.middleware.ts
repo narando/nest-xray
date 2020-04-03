@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from "@nestjs/common";
 import { RequestHandler } from "express";
-import { TracingService } from "./tracing.service";
+import { TracingService } from "../../../core";
 
 interface PatchSegmentURLRequest {
   segment: {
@@ -14,7 +14,7 @@ interface PatchSegmentURLRequest {
 }
 
 @Injectable()
-export class TracingMiddleware implements NestMiddleware {
+export class HttpTracingMiddleware implements NestMiddleware {
   private readonly middleware: RequestHandler;
 
   constructor(private readonly tracingService: TracingService) {

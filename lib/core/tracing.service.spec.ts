@@ -1,13 +1,12 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { Segment, Subsegment } from "aws-xray-sdk";
-
-import { AsyncContext } from "./hooks";
-import { TracingConfig, XRayClient } from "./interfaces";
+import { AsyncContext } from "../async-hooks";
 import {
   TRACING_ASYNC_CONTEXT_SEGMENT,
   TRACING_ASYNC_CONTEXT_SUBSEGMENT,
   XRAY_CLIENT,
-} from "./tracing.constants";
+} from "./constants";
+import { TracingConfig, XRayClient } from "./interfaces";
 import { TracingService } from "./tracing.service";
 
 describe("TracingService", () => {

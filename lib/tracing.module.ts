@@ -1,47 +1,18 @@
-import {
-  DynamicModule,
-  Global,
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-} from "@nestjs/common";
-import * as AWSXRay from "aws-xray-sdk";
+import { DynamicModule, Global, Module } from "@nestjs/common";
+import { AsyncHooksModule } from "./async-hooks";
+import { TracingCoreModule } from "./core";
+import { TracingConfig } from "./core/interfaces";
+import { HttpTransportModule } from "./transports/http";
 
-import { AsyncHooksMiddleware, AsyncHooksModule } from "./hooks";
-import { TracingConfig } from "./interfaces";
-import { XRAY_CLIENT } from "./tracing.constants";
-import { TracingMiddleware } from "./tracing.middleware";
-import { TracingService } from "./tracing.service";
-
-@Global()
 @Module({
-  imports: [AsyncHooksModule],
-  providers: [
-    {
-      provide: TracingConfig,
-      useValue: new TracingConfig(),
-    },
-    {
-      provide: XRAY_CLIENT,
-      useValue: AWSXRay,
-    },
-    TracingService,
-  ],
-  exports: [TracingService],
+  imports: [AsyncHooksModule, HttpTransportModule],
 })
-export class TracingModule implements NestModule {
+export class TracingModule {
   public static forRoot(options: TracingConfig): DynamicModule {
     return {
       module: TracingModule,
-      providers: [{ provide: TracingConfig, useValue: options }],
+      imports: [TracingCoreModule.forRoot(options)],
+      exports: [TracingCoreModule],
     };
-  }
-
-  public configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AsyncHooksMiddleware)
-      .forRoutes("*")
-      .apply(TracingMiddleware)
-      .forRoutes("*");
   }
 }

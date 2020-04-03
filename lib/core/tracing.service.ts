@@ -1,14 +1,13 @@
 import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
 import { Segment, Subsegment } from "aws-xray-sdk";
 import { RequestHandler } from "express";
-
-import { AsyncContext } from "./hooks";
-import { TracingConfig, XRayClient } from "./interfaces";
+import { AsyncContext } from "../async-hooks";
 import {
   TRACING_ASYNC_CONTEXT_SEGMENT,
   TRACING_ASYNC_CONTEXT_SUBSEGMENT,
   XRAY_CLIENT,
-} from "./tracing.constants";
+} from "./constants";
+import { TracingConfig, XRayClient } from "./interfaces";
 
 // WORKAROUND: AWSXRay initializes quite early after importing and the
 // Daemon address can not be changed after that. Our usual initialiation
