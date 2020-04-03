@@ -7,8 +7,8 @@ import {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
-import { TracingNotInitializedException } from "../exceptions";
-import { TracingService } from "../tracing.service";
+import { TracingService } from "../../core";
+import { TracingNotInitializedException } from "../../exceptions";
 import {
   AxiosOnFulfilledInterceptor,
   AxiosOnRejectedInterceptor,
