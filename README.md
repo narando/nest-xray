@@ -7,6 +7,7 @@ This module implements [Distributed Tracing](https://opentracing.io/docs/overvie
 - Automatic tracing
   - For incoming http requests
   - For outgoing http requests
+  - For incoming microservice requests (`@MessagePattern` + `@EventPattern`)
 - Manually create new Subsegments to trace custom functions
 
 ## Usage
@@ -136,6 +137,7 @@ THe `HttpTracingModule` wraps the official `HttpModule` and adds interceptors to
 
 - Only one Subsegment can be persisted at a time. This causes issues when multiple outgoing http requests are made in parallel, some subsegments may never be marked as "finished".
 - The XRay Daemon Address can only be configured through the environment variable.
+- When using Hybrid Applications (HTTP+Microservice), the `APP_INTERCEPTOR` for Microservices is not passed through and must be manually added through `@UseInterceptors(MicroserviceTracingInterceptor)`.
 
 ## License
 
