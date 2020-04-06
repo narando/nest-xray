@@ -112,9 +112,10 @@ export class AxiosTracingInterceptor implements OnModuleInit {
       if (subSegment) {
         if (error.request && error.response) {
           const request = error.request as ClientRequest;
-          const response = {
-            statusCode: error.response.status,
-          } as IncomingMessage;
+          const response =
+            {
+              statusCode: error.response.status,
+            } as IncomingMessage;
 
           subSegment.addRemoteRequestData(request, response, true);
         } else if (error.config) {

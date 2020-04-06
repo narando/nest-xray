@@ -24,12 +24,15 @@ describe("AxiosTracingInterceptor", () => {
   let axios: AxiosInstance;
 
   beforeEach(async () => {
-    axios = ({
-      interceptors: {
-        request: { use: jest.fn() },
-        response: { use: jest.fn() },
-      },
-    } as any) as AxiosInstance;
+    axios =
+      ({
+        interceptors: {
+          request: { use: jest.fn() },
+          response: { use: jest.fn() },
+        },
+      } as
+        any) as
+      AxiosInstance;
 
     testingModule = await Test.createTestingModule({
       providers: [
@@ -167,13 +170,16 @@ describe("AxiosTracingInterceptor", () => {
     beforeEach(() => {
       interceptorFn = interceptor.getRequestErrorInterceptor();
 
-      subSegment = ({
-        id: "1337",
-        name: "http-call",
-        addError: jest.fn(),
-        addFaultFlag: jest.fn(),
-        close: jest.fn(),
-      } as any) as Subsegment;
+      subSegment =
+        ({
+          id: "1337",
+          name: "http-call",
+          addError: jest.fn(),
+          addFaultFlag: jest.fn(),
+          close: jest.fn(),
+        } as
+          any) as
+        Subsegment;
       tracingService.getSubSegment = jest.fn().mockReturnValue(subSegment);
 
       error = new Error("Error in request");
@@ -210,24 +216,28 @@ describe("AxiosTracingInterceptor", () => {
     beforeEach(() => {
       interceptorFn = interceptor.getResponseSuccessInterceptor();
 
-      response = {
-        status: 200,
-        headers: {
-          accept: "application/json",
-        },
-        request: {
-          id: 321312, // Fake data for equality check
-        },
-      } as AxiosResponse;
+      response =
+        {
+          status: 200,
+          headers: {
+            accept: "application/json",
+          },
+          request: {
+            id: 321312, // Fake data for equality check
+          },
+        } as AxiosResponse;
 
-      subSegment = ({
-        id: "1337",
-        name: "http-call",
-        addRemoteRequestData: jest.fn(),
-        addErrorFlag: jest.fn(),
-        addFaultFlag: jest.fn(),
-        close: jest.fn(),
-      } as any) as Subsegment;
+      subSegment =
+        ({
+          id: "1337",
+          name: "http-call",
+          addRemoteRequestData: jest.fn(),
+          addErrorFlag: jest.fn(),
+          addFaultFlag: jest.fn(),
+          close: jest.fn(),
+        } as
+          any) as
+        Subsegment;
       tracingService.getSubSegment = jest.fn().mockReturnValue(subSegment);
     });
 
@@ -300,21 +310,25 @@ describe("AxiosTracingInterceptor", () => {
     beforeEach(() => {
       interceptorFn = interceptor.getResponseErrorInterceptor();
 
-      subSegment = ({
-        id: "1337",
-        name: "http-call",
-        addRemoteRequestData: jest.fn(),
-        close: jest.fn(),
-      } as any) as Subsegment;
+      subSegment =
+        ({
+          id: "1337",
+          name: "http-call",
+          addRemoteRequestData: jest.fn(),
+          close: jest.fn(),
+        } as
+          any) as
+        Subsegment;
       tracingService.getSubSegment = jest.fn().mockReturnValue(subSegment);
 
       error = new Error("Error in request") as AxiosError;
       error.request = {
         id: 3123,
       };
-      error.response = {
-        status: 419,
-      } as AxiosResponse;
+      error.response =
+        {
+          status: 419,
+        } as AxiosResponse;
     });
 
     it("should use get the subsegment from tracing service", () => {
