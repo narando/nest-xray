@@ -7,6 +7,7 @@ import {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
+import { TracingNotInitializedException } from "../exceptions";
 import { TracingService } from "../tracing.service";
 import {
   AxiosOnFulfilledInterceptor,
@@ -160,6 +161,15 @@ describe("AxiosTracingInterceptor", () => {
         })
       );
     });
+
+    it("should do nothing when tracing was not initialized", () => {
+      tracingService.createSubSegment = jest.fn().mockImplementation(() => {
+        throw new TracingNotInitializedException();
+      });
+
+      const returnedConfig = interceptorFn(config);
+      expect(returnedConfig).toEqual(config);
+    });
   });
 
   describe("requestErrorInterceptor", () => {
@@ -204,6 +214,14 @@ describe("AxiosTracingInterceptor", () => {
     });
 
     it("should rethrow the error", () => {
+      expect(() => interceptorFn(error)).toThrow(error);
+    });
+
+    it("should rethrow the error when tracing was not initialized", () => {
+      tracingService.getSubSegment = jest.fn().mockImplementation(() => {
+        throw new TracingNotInitializedException();
+      });
+
       expect(() => interceptorFn(error)).toThrow(error);
     });
   });
@@ -300,6 +318,14 @@ describe("AxiosTracingInterceptor", () => {
     it("should return the response", () => {
       expect(interceptorFn(response)).toEqual(response);
     });
+
+    it("should return the response when tracing was not initialized", () => {
+      tracingService.getSubSegment = jest.fn().mockImplementation(() => {
+        throw new TracingNotInitializedException();
+      });
+
+      expect(interceptorFn(response)).toEqual(response);
+    });
   });
 
   describe("responseErrorInterceptor", () => {
@@ -366,6 +392,14 @@ describe("AxiosTracingInterceptor", () => {
     });
 
     it("should rethrow the error", () => {
+      expect(() => interceptorFn(error)).toThrow(error);
+    });
+
+    it("should rethrow the error when tracing was not initialized", () => {
+      tracingService.getSubSegment = jest.fn().mockImplementation(() => {
+        throw new TracingNotInitializedException();
+      });
+
       expect(() => interceptorFn(error)).toThrow(error);
     });
   });
