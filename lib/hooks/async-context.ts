@@ -1,5 +1,6 @@
 import { OnModuleDestroy, OnModuleInit } from "@nestjs/common";
 import * as asyncHooks from "async_hooks";
+import { UnknownAsyncContextException } from "../exceptions";
 import { AsyncHooksHelper } from "./async-hooks-helper";
 import { AsyncHooksStorage } from "./async-hooks-storage";
 
@@ -54,9 +55,7 @@ export class AsyncContext implements OnModuleInit, OnModuleDestroy {
     const eid = asyncHooks.executionAsyncId();
     const state = this.internalStorage.get(eid);
     if (!state) {
-      throw new Error(
-        `Async ID (${eid}) is not registered within internal cache.`
-      );
+      throw new UnknownAsyncContextException(eid);
     }
     return state;
   }
