@@ -1,6 +1,9 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { Segment, Subsegment } from "aws-xray-sdk";
-
+import {
+  TracingNotInitializedException,
+  UnknownAsyncContextException,
+} from "./exceptions";
 import { AsyncContext } from "./hooks";
 import { TracingConfig, XRayClient } from "./interfaces";
 import {
@@ -109,6 +112,18 @@ describe("TracingService", () => {
         segment
       );
     });
+
+    it("should throw TracingNotInitializedException when AsyncContext#run was not used", () => {
+      asyncContext.set = jest.fn().mockImplementation(() => {
+        throw new UnknownAsyncContextException(123);
+      });
+
+      const segment = { id: "1337" } as Segment;
+
+      expect(() => tracingService.setRootSegment(segment)).toThrow(
+        TracingNotInitializedException
+      );
+    });
   });
 
   describe("getRootSegment", () => {
@@ -132,6 +147,16 @@ describe("TracingService", () => {
 
       expect(returnedSegment).toEqual(segment);
     });
+
+    it("should throw TracingNotInitializedException when AsyncContext#run was not used", () => {
+      asyncContext.get = jest.fn().mockImplementation(() => {
+        throw new UnknownAsyncContextException(123);
+      });
+
+      expect(() => tracingService.getRootSegment()).toThrow(
+        TracingNotInitializedException
+      );
+    });
   });
 
   describe("setSubSegment", () => {
@@ -147,6 +172,17 @@ describe("TracingService", () => {
       expect(asyncContext.set).toHaveBeenLastCalledWith(
         TRACING_ASYNC_CONTEXT_SUBSEGMENT,
         subsegment
+      );
+    });
+
+    it("should throw TracingNotInitializedException when AsyncContext#run was not used", () => {
+      asyncContext.set = jest.fn().mockImplementation(() => {
+        throw new UnknownAsyncContextException(123);
+      });
+
+      const subsegment = { id: "1337" } as Subsegment;
+      expect(() => tracingService.setSubSegment(subsegment)).toThrow(
+        TracingNotInitializedException
       );
     });
   });
@@ -171,6 +207,16 @@ describe("TracingService", () => {
       const returnedSegment = tracingService.getSubSegment();
 
       expect(returnedSegment).toEqual(subsegment);
+    });
+
+    it("should throw TracingNotInitializedException when AsyncContext#run was not used", () => {
+      asyncContext.get = jest.fn().mockImplementation(() => {
+        throw new UnknownAsyncContextException(123);
+      });
+
+      expect(() => tracingService.getSubSegment()).toThrow(
+        TracingNotInitializedException
+      );
     });
   });
 

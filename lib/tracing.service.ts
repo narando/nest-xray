@@ -1,7 +1,10 @@
 import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
 import { Segment, Subsegment } from "aws-xray-sdk";
 import { RequestHandler } from "express";
-
+import {
+  TracingNotInitializedException,
+  UnknownAsyncContextException,
+} from "./exceptions";
 import { AsyncContext } from "./hooks";
 import { TracingConfig, XRayClient } from "./interfaces";
 import {
@@ -59,23 +62,55 @@ export class TracingService implements OnModuleInit {
   }
 
   public setRootSegment(segment: Segment) {
-    this.asyncContext.set(TRACING_ASYNC_CONTEXT_SEGMENT, segment);
+    try {
+      this.asyncContext.set(TRACING_ASYNC_CONTEXT_SEGMENT, segment);
+    } catch (err) {
+      if (err instanceof UnknownAsyncContextException) {
+        throw new TracingNotInitializedException();
+      }
+
+      throw err;
+    }
   }
 
   public getRootSegment(): Segment {
-    return this.asyncContext.get<string, Segment>(
-      TRACING_ASYNC_CONTEXT_SEGMENT
-    );
+    try {
+      return this.asyncContext.get<string, Segment>(
+        TRACING_ASYNC_CONTEXT_SEGMENT
+      );
+    } catch (err) {
+      if (err instanceof UnknownAsyncContextException) {
+        throw new TracingNotInitializedException();
+      }
+
+      throw err;
+    }
   }
 
   public setSubSegment(segment: Subsegment) {
-    this.asyncContext.set(TRACING_ASYNC_CONTEXT_SUBSEGMENT, segment);
+    try {
+      this.asyncContext.set(TRACING_ASYNC_CONTEXT_SUBSEGMENT, segment);
+    } catch (err) {
+      if (err instanceof UnknownAsyncContextException) {
+        throw new TracingNotInitializedException();
+      }
+
+      throw err;
+    }
   }
 
   public getSubSegment(): Subsegment {
-    return this.asyncContext.get<string, Subsegment>(
-      TRACING_ASYNC_CONTEXT_SUBSEGMENT
-    );
+    try {
+      return this.asyncContext.get<string, Subsegment>(
+        TRACING_ASYNC_CONTEXT_SUBSEGMENT
+      );
+    } catch (err) {
+      if (err instanceof UnknownAsyncContextException) {
+        throw new TracingNotInitializedException();
+      }
+
+      throw err;
+    }
   }
 
   public getTracingHeader(parentSegment: Subsegment): string {
