@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/narando/nest-xray/compare/v1.1.0...v1.1.1) (2020-04-09)
+
+
+### Bug Fixes
+
+* **http:** ignore missing tracing context in HttpService [#75](https://github.com/narando/nest-xray/issues/75) ([b03160d](https://github.com/narando/nest-xray/commit/b03160d03ee590ab7b416830a58ba8fb0508acc5))
+* throw special exception if TracingService is used in unknown context ([688087c](https://github.com/narando/nest-xray/commit/688087c09af4b8a2c95f1a8931f9e8e0b3c88d3b))
+* **hooks:** throw named exception if async id is unknown ([cbdbd59](https://github.com/narando/nest-xray/commit/cbdbd59d2c653b7fcc76b9835cdcca2984fe772f))
+
 # [1.1.0](https://github.com/narando/nest-xray/compare/v1.0.1...v1.1.0) (2020-03-14)
 
 
