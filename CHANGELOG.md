@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/narando/nest-xray/compare/v1.1.1...v1.2.0) (2020-04-15)
+
+
+### Features
+
+* refactor code to enable multiple environments ([96bec82](https://github.com/narando/nest-xray/commit/96bec82f6cde88702d167760d5d19b9661aedfe3))
+
 ## [1.1.1](https://github.com/narando/nest-xray/compare/v1.1.0...v1.1.1) (2020-04-09)
 
 
