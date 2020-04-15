@@ -4,9 +4,11 @@ This module implements [Distributed Tracing](https://opentracing.io/docs/overvie
 
 ## Features
 
-- Automatic tracing for incoming HTTP requests
-- Automatic tracing for outgoing HTTP requests
-- Manual create new Subsegments to trace custom functions
+- Supported Environments
+  - HTTP (express.js)
+- Clients
+  - `HttpService`/`HttpModule`
+- Manually create new Subsegments to trace custom functions
 
 ## Usage
 
@@ -26,22 +28,54 @@ Register the `TracingModule` with your app module:
 import { TracingModule } from "@narando/nest-xray";
 
 @Module({
-  imports: [TracingModule.forRoot({ serviceName: "your-service-name" })]
+  imports: [TracingModule.forRoot({ serviceName: "your-service-name" })],
 })
 export class AppModule {}
 ```
 
-Incoming HTTP requests are now automatically traced.
+### Environments
 
-### HTTP Client
+An _environment_ is responsible for automatically reading the trace metadata from the incoming request (if available), creating a segment for the processing that happens in the service and recording additional metadata about the request.
 
-If you use the [`HttpModule`](https://docs.nestjs.com/techniques/http-module), you can use this module to auto-trace outgoing HTTP requests.
+There are multiple available _environment candidates_ in Nest.js. By default most applications use the HTTP application model, where they define a `@Controller` and use `express` or `fastify` in the background.  
+For this application type, the `HttpEnvironment` tries to read an existing trace segment from the `X-Amzn-Trace-Id`, and then creates a new segment and adds the URL and other information about the request to the segment. This segment is then made available throughout the request, **Clients** can now read the segment and add subsegment for the calls that are made through them.
 
-Replace all usages of `HttpModule` with `HttpTracingModule`, and keep the same configuration.
+The `HttpEnvironment` is activated by default in `@narando/nest-xray`.
+
+Currently no other environments are supported.
+
+> **If you are interested in contributing**:
+>
+> Building and supporting more environments would greatly improve the usefulness of this package.
+>
+> Potential environments could be:
+>
+> - `@nestjs/graphql`
+> - `@nestjs/websockets`
+> - `@nestjs/microservices`
+> - `AWS Lambda` - where the trace metadata is presented in environment variables, see #67
+
+#### Http
+
+The `HttpEnvironment` checks whether the `X-Amzn-Trace-Id` header is set and valid, and then creates a segment that references this origin trace.
+When the request succeeds or fails, the environment adds the current time and the success/error status to the segment.
+
+This environment is mostly implemented through the [express middleware](https://github.com/aws/aws-xray-sdk-node/tree/master/packages/express) of the official `aws-xray-sdk`
+
+### Clients
+
+To trace calls made to a different service, you can either use a premade _client_, or use the `TracingService#createSubSegment` method to manually instrument the client of your choosing.
+The premade _clients_ will automatically create a subsegment for all requests made, and track the duration and response code.
+
+#### `HttpService`
+
+This _client_ is a drop-in replacement for the [`HttpService`](https://docs.nestjs.com/techniques/http-module) from `@nestjs/common`.
+
+To use it, you must only replace the imports like this:
 
 ```diff
 - import { HttpModule } from "@nestjs/common"
-+ import { HttpTracingModule } from "@narando/xray-tracing"
++ import { HttpTracingModule } from "@narando/nest-xray"
 
  @Module({
    imports: [
@@ -63,14 +97,15 @@ Replace all usages of `HttpModule` with `HttpTracingModule`, and keep the same c
  export class APIModule {}
 ```
 
-Keep using `HttpService` as before, and all requests are traced as Subsegment and the necessary header for the downstream service is added the the request.
+Keep using `HttpService` as before, and all requests are traced as Subsegment and the necessary header for the downstream service is added to the the request.
 
 ### Custom Tracing
 
-If you want to do any of the following things, the `TracingService` is the right entrypoint:
+If the premade _clients_ are not sufficient or you want more control, you can use the `TracingService`.
 
-- Create custom subsegments for internal functions
-- Add data to the current Segment/Subsegment
+You can use it to create new subsegments and to access the currently set segment and subsegment.
+
+Once you have access to a segment/subsegment, you can add any data you want to it.
 
 ```typescript
 import { TracingService } from "@narando/nest-xray";
@@ -102,6 +137,8 @@ export class ExternalAPIClient {
 
 ## Implementation
 
+We use `async_hooks` to store the traces and `aws-xray-sdk` to interact with AWS X-Ray.
+
 ### `async_hooks`
 
 This module uses the Node.js API [`async_hooks`](https://nodejs.org/api/async_hooks.html) to persist the Segment without having to explicitly pass it around to every function involved. It is what enables the "automatic" part of this module.
@@ -117,13 +154,9 @@ I adopted his implementation into this module for following reasons:
 a) It implements all the hard parts with `async_hooks` and provides enough functionality for our use cases.
 b) It was developed by the Nest.js Maintainer and is proposed to be merged into Nest.js. If this happens, we may be able to switch to the official implementation without changing any usages of the module.
 
-### TracingModule
+### TracingCoreModule
 
-The TracingModule combines the `AsyncContext` with the official `AWSXRay` client. It exports the `TracingService`, that can be used by other modules to implement additional tracing behaviour (e.g. tracing outgoing http requests).
-
-### HttpTracingModule
-
-THe `HttpTracingModule` wraps the official `HttpModule` and adds interceptors to the used axios client that automatically trace all outgoing requests.
+The TracingCoreModule combines the `AsyncContext` with the official `AWSXRay` client. It exports the `TracingService`, that can be used by other modules to implement additional tracing behaviour (e.g. tracing outgoing http requests).
 
 ## Known Bugs
 

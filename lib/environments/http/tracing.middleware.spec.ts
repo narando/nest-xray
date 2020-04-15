@@ -1,9 +1,9 @@
 import { Test } from "@nestjs/testing";
-import { TracingMiddleware } from "./tracing.middleware";
-import { TracingService } from "./tracing.service";
+import { TracingService } from "../../core";
+import { HttpTracingMiddleware } from "./tracing.middleware";
 
-describe("TracingMiddleware", () => {
-  let tracingMiddleware: TracingMiddleware;
+describe("HttpTracingMiddleware", () => {
+  let tracingMiddleware: HttpTracingMiddleware;
   let tracingService: TracingService;
   let xrayMiddleware: jest.Mock;
 
@@ -12,7 +12,7 @@ describe("TracingMiddleware", () => {
 
     const module = await Test.createTestingModule({
       providers: [
-        TracingMiddleware,
+        HttpTracingMiddleware,
         {
           provide: TracingService,
           useFactory: () => ({
@@ -22,7 +22,9 @@ describe("TracingMiddleware", () => {
       ],
     }).compile();
 
-    tracingMiddleware = module.get<TracingMiddleware>(TracingMiddleware);
+    tracingMiddleware = module.get<HttpTracingMiddleware>(
+      HttpTracingMiddleware
+    );
     tracingService = module.get<TracingService>(TracingService);
   });
 
