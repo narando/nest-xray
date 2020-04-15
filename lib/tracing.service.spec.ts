@@ -225,11 +225,10 @@ describe("TracingService", () => {
     let subSegment: Subsegment;
 
     beforeEach(() => {
-      rootSegment =
-        {
-          id: "1337",
-          trace_id: "1-5759e988-bd862e3fe1be46a994272793",
-        } as Segment;
+      rootSegment = {
+        id: "1337",
+        trace_id: "1-5759e988-bd862e3fe1be46a994272793",
+      } as Segment;
       subSegment = { id: "3117" } as Subsegment;
 
       asyncContext.get = jest.fn().mockReturnValue(rootSegment);
