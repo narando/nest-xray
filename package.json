@@ -39,7 +39,7 @@
     "@types/node": "12.12.31",
     "@types/supertest": "2.0.9",
     "aws-xray-sdk": "2.5.0",
-    "jest": "25.5.4",
+    "jest": "26.0.1",
     "prettier": "2.0.5",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
