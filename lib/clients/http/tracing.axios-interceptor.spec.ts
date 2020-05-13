@@ -12,14 +12,14 @@ import { TracingNotInitializedException } from "../../exceptions";
 import {
   AxiosOnFulfilledInterceptor,
   AxiosOnRejectedInterceptor,
-  AxiosTracingInterceptor,
-} from "./axios-tracing.interceptor";
+  TracingAxiosInterceptor,
+} from "./tracing.axios-interceptor";
 import { HEADER_TRACE_CONTEXT } from "./http-tracing.constants";
 
-describe("AxiosTracingInterceptor", () => {
+describe("TracingAxiosInterceptor", () => {
   let testingModule: TestingModule;
 
-  let interceptor: AxiosTracingInterceptor;
+  let interceptor: TracingAxiosInterceptor;
   let tracingService: TracingService;
   let httpService: HttpService;
   let axios: AxiosInstance;
@@ -34,7 +34,7 @@ describe("AxiosTracingInterceptor", () => {
 
     testingModule = await Test.createTestingModule({
       providers: [
-        AxiosTracingInterceptor,
+        TracingAxiosInterceptor,
         {
           provide: TracingService,
           useFactory: () => ({}),
@@ -43,8 +43,8 @@ describe("AxiosTracingInterceptor", () => {
       ],
     }).compile();
 
-    interceptor = testingModule.get<AxiosTracingInterceptor>(
-      AxiosTracingInterceptor
+    interceptor = testingModule.get<TracingAxiosInterceptor>(
+      TracingAxiosInterceptor
     );
     tracingService = testingModule.get<TracingService>(TracingService);
     httpService = testingModule.get<HttpService>(HttpService);

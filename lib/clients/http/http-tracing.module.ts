@@ -5,10 +5,10 @@ import {
   HttpService,
   Module,
 } from "@nestjs/common";
-import { AxiosTracingInterceptor } from "./axios-tracing.interceptor";
+import { TracingAxiosInterceptor } from "./tracing.axios-interceptor";
 
 @Module({
-  providers: [HttpService, AxiosTracingInterceptor],
+  providers: [HttpService, TracingAxiosInterceptor],
   exports: [HttpService],
 })
 export class HttpTracingModule {

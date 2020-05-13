@@ -10,7 +10,7 @@ export type AxiosOnFulfilledInterceptor<T> = (value: T) => T | Promise<T>;
 export type AxiosOnRejectedInterceptor = (error: any) => any;
 
 @Injectable()
-export class AxiosTracingInterceptor implements OnModuleInit {
+export class TracingAxiosInterceptor implements OnModuleInit {
   constructor(
     private readonly tracingService: TracingService,
     private readonly httpService: HttpService
