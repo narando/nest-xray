@@ -1,4 +1,9 @@
-import { HttpService, Injectable, OnModuleInit } from "@nestjs/common";
+import {
+  AxiosFulfilledInterceptor,
+  AxiosInterceptor,
+  AxiosRejectedInterceptor,
+} from "@narando/nest-axios-interceptor";
+import { HttpService, Injectable } from "@nestjs/common";
 import { getCauseTypeFromHttpStatus } from "aws-xray-sdk-core/lib/utils";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ClientRequest, IncomingMessage } from "http";
@@ -6,32 +11,16 @@ import { TracingService } from "../../core";
 import { TracingNotInitializedException } from "../../exceptions";
 import { HEADER_TRACE_CONTEXT } from "./http-tracing.constants";
 
-export type AxiosOnFulfilledInterceptor<T> = (value: T) => T | Promise<T>;
-export type AxiosOnRejectedInterceptor = (error: any) => any;
-
 @Injectable()
-export class TracingAxiosInterceptor implements OnModuleInit {
+export class TracingAxiosInterceptor extends AxiosInterceptor {
   constructor(
     private readonly tracingService: TracingService,
-    private readonly httpService: HttpService
-  ) {}
-
-  public onModuleInit() {
-    const { axiosRef: axios } = this.httpService;
-
-    axios.interceptors.request.use(
-      this.getRequestConfigInterceptor(),
-      this.getRequestErrorInterceptor()
-    );
-    axios.interceptors.response.use(
-      this.getResponseSuccessInterceptor(),
-      this.getResponseErrorInterceptor()
-    );
+    httpService: HttpService
+  ) {
+    super(httpService);
   }
 
-  public getRequestConfigInterceptor(): AxiosOnFulfilledInterceptor<
-    AxiosRequestConfig
-  > {
+  public requestFulfilled(): AxiosFulfilledInterceptor<AxiosRequestConfig> {
     // Add Info to Subsegment
     // Persist Subsegment to Async context
     return (config) => {
@@ -58,7 +47,7 @@ export class TracingAxiosInterceptor implements OnModuleInit {
     };
   }
 
-  public getRequestErrorInterceptor(): AxiosOnRejectedInterceptor {
+  public requestRejected(): AxiosRejectedInterceptor {
     // Cause: Networking Error
     // Add error to Subsegment
     // Close Subsegment
@@ -79,9 +68,7 @@ export class TracingAxiosInterceptor implements OnModuleInit {
     };
   }
 
-  public getResponseSuccessInterceptor(): AxiosOnFulfilledInterceptor<
-    AxiosResponse
-  > {
+  public responseFulfilled(): AxiosFulfilledInterceptor<AxiosResponse> {
     // Add response code to Subsegment
     // Close Subsegment
     return (response) => {
@@ -126,7 +113,7 @@ export class TracingAxiosInterceptor implements OnModuleInit {
     };
   }
 
-  public getResponseErrorInterceptor(): AxiosOnRejectedInterceptor {
+  public responseRejected(): AxiosRejectedInterceptor {
     // Non 2xx Status Code
     // Add error to Subsegment
     // Close Subsegment

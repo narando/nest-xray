@@ -1,3 +1,7 @@
+import {
+  AxiosFulfilledInterceptor,
+  AxiosRejectedInterceptor,
+} from "@narando/nest-axios-interceptor";
 import { HttpService } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Subsegment } from "aws-xray-sdk";
@@ -9,12 +13,8 @@ import {
 } from "axios";
 import { TracingService } from "../../core";
 import { TracingNotInitializedException } from "../../exceptions";
-import {
-  AxiosOnFulfilledInterceptor,
-  AxiosOnRejectedInterceptor,
-  TracingAxiosInterceptor,
-} from "./tracing.axios-interceptor";
 import { HEADER_TRACE_CONTEXT } from "./http-tracing.constants";
+import { TracingAxiosInterceptor } from "./tracing.axios-interceptor";
 
 describe("TracingAxiosInterceptor", () => {
   let testingModule: TestingModule;
@@ -56,60 +56,13 @@ describe("TracingAxiosInterceptor", () => {
     expect(httpService).toBeDefined();
   });
 
-  describe("onModuleInit", () => {
-    let requestConfigInterceptor: jest.Mock;
-    let requestErrorInterceptor: jest.Mock;
-    let responseSuccessInterceptor: jest.Mock;
-    let responseErrorInterceptor: jest.Mock;
-
-    beforeEach(() => {
-      requestConfigInterceptor = jest.fn();
-      requestErrorInterceptor = jest.fn();
-      responseSuccessInterceptor = jest.fn();
-      responseErrorInterceptor = jest.fn();
-
-      interceptor.getRequestConfigInterceptor = jest
-        .fn()
-        .mockReturnValue(requestConfigInterceptor);
-      interceptor.getRequestErrorInterceptor = jest
-        .fn()
-        .mockReturnValue(requestErrorInterceptor);
-      interceptor.getResponseSuccessInterceptor = jest
-        .fn()
-        .mockReturnValue(responseSuccessInterceptor);
-      interceptor.getResponseErrorInterceptor = jest
-        .fn()
-        .mockReturnValue(responseErrorInterceptor);
-    });
-
-    afterEach(() => {
-      testingModule.close();
-    });
-
-    it("registers the interceptors", () => {
-      testingModule.init();
-
-      expect(axios.interceptors.request.use).toHaveBeenCalledTimes(1);
-      expect(axios.interceptors.request.use).toHaveBeenCalledWith(
-        requestConfigInterceptor,
-        requestErrorInterceptor
-      );
-
-      expect(axios.interceptors.response.use).toHaveBeenCalledTimes(1);
-      expect(axios.interceptors.response.use).toHaveBeenCalledWith(
-        responseSuccessInterceptor,
-        responseErrorInterceptor
-      );
-    });
-  });
-
-  describe("requestConfigInterceptor", () => {
-    let interceptorFn: AxiosOnFulfilledInterceptor<AxiosRequestConfig>;
+  describe("requestFulfilled", () => {
+    let interceptorFn: AxiosFulfilledInterceptor<AxiosRequestConfig>;
     let config: AxiosRequestConfig;
     let subSegment: Subsegment;
 
     beforeEach(() => {
-      interceptorFn = interceptor.getRequestConfigInterceptor();
+      interceptorFn = interceptor.requestFulfilled();
 
       config = {
         headers: {},
@@ -169,13 +122,13 @@ describe("TracingAxiosInterceptor", () => {
     });
   });
 
-  describe("requestErrorInterceptor", () => {
-    let interceptorFn: AxiosOnRejectedInterceptor;
+  describe("requestRejected", () => {
+    let interceptorFn: AxiosRejectedInterceptor;
     let subSegment: Subsegment;
     let error: Error;
 
     beforeEach(() => {
-      interceptorFn = interceptor.getRequestErrorInterceptor();
+      interceptorFn = interceptor.requestRejected();
 
       subSegment = ({
         id: "1337",
@@ -220,13 +173,13 @@ describe("TracingAxiosInterceptor", () => {
     });
   });
 
-  describe("responseSuccessInterceptor", () => {
-    let interceptorFn: AxiosOnFulfilledInterceptor<AxiosResponse>;
+  describe("responseFulfilled", () => {
+    let interceptorFn: AxiosFulfilledInterceptor<AxiosResponse>;
     let response: AxiosResponse;
     let subSegment: Subsegment;
 
     beforeEach(() => {
-      interceptorFn = interceptor.getResponseSuccessInterceptor();
+      interceptorFn = interceptor.responseFulfilled();
 
       response = {
         status: 200,
@@ -319,12 +272,12 @@ describe("TracingAxiosInterceptor", () => {
   });
 
   describe("responseErrorInterceptor", () => {
-    let interceptorFn: AxiosOnRejectedInterceptor;
+    let interceptorFn: AxiosRejectedInterceptor;
     let subSegment: Subsegment;
     let error: AxiosError;
 
     beforeEach(() => {
-      interceptorFn = interceptor.getResponseErrorInterceptor();
+      interceptorFn = interceptor.responseRejected();
 
       subSegment = ({
         id: "1337",
