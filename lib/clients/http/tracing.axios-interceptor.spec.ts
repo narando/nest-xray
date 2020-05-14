@@ -1,3 +1,7 @@
+import {
+  AxiosFulfilledInterceptor,
+  AxiosRejectedInterceptor,
+} from "@narando/nest-axios-interceptor";
 import { HttpService } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Subsegment } from "aws-xray-sdk";
@@ -9,17 +13,16 @@ import {
 } from "axios";
 import { TracingService } from "../../core";
 import { TracingNotInitializedException } from "../../exceptions";
-import {
-  AxiosOnFulfilledInterceptor,
-  AxiosOnRejectedInterceptor,
-  AxiosTracingInterceptor,
-} from "./axios-tracing.interceptor";
 import { HEADER_TRACE_CONTEXT } from "./http-tracing.constants";
+import {
+  TracingAxiosInterceptor,
+  TRACING_CONFIG_KEY,
+} from "./tracing.axios-interceptor";
 
-describe("AxiosTracingInterceptor", () => {
+describe("TracingAxiosInterceptor", () => {
   let testingModule: TestingModule;
 
-  let interceptor: AxiosTracingInterceptor;
+  let interceptor: TracingAxiosInterceptor;
   let tracingService: TracingService;
   let httpService: HttpService;
   let axios: AxiosInstance;
@@ -34,7 +37,7 @@ describe("AxiosTracingInterceptor", () => {
 
     testingModule = await Test.createTestingModule({
       providers: [
-        AxiosTracingInterceptor,
+        TracingAxiosInterceptor,
         {
           provide: TracingService,
           useFactory: () => ({}),
@@ -43,8 +46,8 @@ describe("AxiosTracingInterceptor", () => {
       ],
     }).compile();
 
-    interceptor = testingModule.get<AxiosTracingInterceptor>(
-      AxiosTracingInterceptor
+    interceptor = testingModule.get<TracingAxiosInterceptor>(
+      TracingAxiosInterceptor
     );
     tracingService = testingModule.get<TracingService>(TracingService);
     httpService = testingModule.get<HttpService>(HttpService);
@@ -56,60 +59,13 @@ describe("AxiosTracingInterceptor", () => {
     expect(httpService).toBeDefined();
   });
 
-  describe("onModuleInit", () => {
-    let requestConfigInterceptor: jest.Mock;
-    let requestErrorInterceptor: jest.Mock;
-    let responseSuccessInterceptor: jest.Mock;
-    let responseErrorInterceptor: jest.Mock;
-
-    beforeEach(() => {
-      requestConfigInterceptor = jest.fn();
-      requestErrorInterceptor = jest.fn();
-      responseSuccessInterceptor = jest.fn();
-      responseErrorInterceptor = jest.fn();
-
-      interceptor.getRequestConfigInterceptor = jest
-        .fn()
-        .mockReturnValue(requestConfigInterceptor);
-      interceptor.getRequestErrorInterceptor = jest
-        .fn()
-        .mockReturnValue(requestErrorInterceptor);
-      interceptor.getResponseSuccessInterceptor = jest
-        .fn()
-        .mockReturnValue(responseSuccessInterceptor);
-      interceptor.getResponseErrorInterceptor = jest
-        .fn()
-        .mockReturnValue(responseErrorInterceptor);
-    });
-
-    afterEach(() => {
-      testingModule.close();
-    });
-
-    it("registers the interceptors", () => {
-      testingModule.init();
-
-      expect(axios.interceptors.request.use).toHaveBeenCalledTimes(1);
-      expect(axios.interceptors.request.use).toHaveBeenCalledWith(
-        requestConfigInterceptor,
-        requestErrorInterceptor
-      );
-
-      expect(axios.interceptors.response.use).toHaveBeenCalledTimes(1);
-      expect(axios.interceptors.response.use).toHaveBeenCalledWith(
-        responseSuccessInterceptor,
-        responseErrorInterceptor
-      );
-    });
-  });
-
-  describe("requestConfigInterceptor", () => {
-    let interceptorFn: AxiosOnFulfilledInterceptor<AxiosRequestConfig>;
+  describe("requestFulfilled", () => {
+    let interceptorFn: AxiosFulfilledInterceptor<AxiosRequestConfig>;
     let config: AxiosRequestConfig;
     let subSegment: Subsegment;
 
     beforeEach(() => {
-      interceptorFn = interceptor.getRequestConfigInterceptor();
+      interceptorFn = interceptor.requestFulfilled();
 
       config = {
         headers: {},
@@ -136,11 +92,10 @@ describe("AxiosTracingInterceptor", () => {
       );
     });
 
-    it("should persist the subsegment to tracing service", () => {
+    it("should persist the subsegment to the request config", () => {
       interceptorFn(config);
 
-      expect(tracingService.setSubSegment).toHaveBeenCalledTimes(1);
-      expect(tracingService.setSubSegment).toHaveBeenCalledWith(subSegment);
+      expect(config[TRACING_CONFIG_KEY].subSegment).toBe(subSegment);
     });
 
     it("should add the tracing header to the request config", () => {
@@ -169,13 +124,13 @@ describe("AxiosTracingInterceptor", () => {
     });
   });
 
-  describe("requestErrorInterceptor", () => {
-    let interceptorFn: AxiosOnRejectedInterceptor;
+  describe("requestRejected", () => {
+    let interceptorFn: AxiosRejectedInterceptor;
     let subSegment: Subsegment;
-    let error: Error;
+    let error: AxiosError;
 
     beforeEach(() => {
-      interceptorFn = interceptor.getRequestErrorInterceptor();
+      interceptorFn = interceptor.requestRejected();
 
       subSegment = ({
         id: "1337",
@@ -184,15 +139,15 @@ describe("AxiosTracingInterceptor", () => {
         addFaultFlag: jest.fn(),
         close: jest.fn(),
       } as any) as Subsegment;
-      tracingService.getSubSegment = jest.fn().mockReturnValue(subSegment);
 
+      // @ts-ignore
       error = new Error("Error in request");
-    });
-
-    it("should use get the subsegment from tracing service", () => {
-      expect(() => interceptorFn(error)).toThrow();
-
-      expect(tracingService.getSubSegment).toHaveBeenCalledTimes(1);
+      error.isAxiosError = true;
+      error.config = {
+        [TRACING_CONFIG_KEY]: {
+          subSegment,
+        },
+      } as AxiosRequestConfig;
     });
 
     it("should add the error data to the subsegment", () => {
@@ -211,32 +166,19 @@ describe("AxiosTracingInterceptor", () => {
       expect(() => interceptorFn(error)).toThrow(error);
     });
 
-    it("should rethrow the error when tracing was not initialized", () => {
-      tracingService.getSubSegment = jest.fn().mockImplementation(() => {
-        throw new TracingNotInitializedException();
-      });
-
+    it("should do nothing if the error is not an AxiosError", () => {
+      (error as any).isAxiosError = false;
       expect(() => interceptorFn(error)).toThrow(error);
     });
   });
 
-  describe("responseSuccessInterceptor", () => {
-    let interceptorFn: AxiosOnFulfilledInterceptor<AxiosResponse>;
+  describe("responseFulfilled", () => {
+    let interceptorFn: AxiosFulfilledInterceptor<AxiosResponse>;
     let response: AxiosResponse;
     let subSegment: Subsegment;
 
     beforeEach(() => {
-      interceptorFn = interceptor.getResponseSuccessInterceptor();
-
-      response = {
-        status: 200,
-        headers: {
-          accept: "application/json",
-        },
-        request: {
-          id: 321312, // Fake data for equality check
-        },
-      } as AxiosResponse;
+      interceptorFn = interceptor.responseFulfilled();
 
       subSegment = ({
         id: "1337",
@@ -246,17 +188,25 @@ describe("AxiosTracingInterceptor", () => {
         addFaultFlag: jest.fn(),
         close: jest.fn(),
       } as any) as Subsegment;
-      tracingService.getSubSegment = jest.fn().mockReturnValue(subSegment);
-    });
 
-    it("should use get the subsegment from tracing service", () => {
-      interceptorFn(response);
-
-      expect(tracingService.getSubSegment).toHaveBeenCalledTimes(1);
+      response = {
+        status: 200,
+        headers: {
+          accept: "application/json",
+        },
+        request: {
+          id: 321312, // Fake data for equality check
+        },
+        config: {
+          [TRACING_CONFIG_KEY]: {
+            subSegment,
+          },
+        } as AxiosRequestConfig,
+      } as AxiosResponse;
     });
 
     it("should do nothing if no subsegment was saved", () => {
-      tracingService.getSubSegment = jest.fn().mockReturnValue(undefined);
+      response.config[TRACING_CONFIG_KEY] = {};
 
       expect(interceptorFn(response)).toEqual(response);
     });
@@ -308,23 +258,15 @@ describe("AxiosTracingInterceptor", () => {
     it("should return the response", () => {
       expect(interceptorFn(response)).toEqual(response);
     });
-
-    it("should return the response when tracing was not initialized", () => {
-      tracingService.getSubSegment = jest.fn().mockImplementation(() => {
-        throw new TracingNotInitializedException();
-      });
-
-      expect(interceptorFn(response)).toEqual(response);
-    });
   });
 
   describe("responseErrorInterceptor", () => {
-    let interceptorFn: AxiosOnRejectedInterceptor;
+    let interceptorFn: AxiosRejectedInterceptor;
     let subSegment: Subsegment;
     let error: AxiosError;
 
     beforeEach(() => {
-      interceptorFn = interceptor.getResponseErrorInterceptor();
+      interceptorFn = interceptor.responseRejected();
 
       subSegment = ({
         id: "1337",
@@ -332,25 +274,24 @@ describe("AxiosTracingInterceptor", () => {
         addRemoteRequestData: jest.fn(),
         close: jest.fn(),
       } as any) as Subsegment;
-      tracingService.getSubSegment = jest.fn().mockReturnValue(subSegment);
 
       error = new Error("Error in request") as AxiosError;
+      error.isAxiosError = true;
       error.request = {
         id: 3123,
       };
       error.response = {
         status: 419,
       } as AxiosResponse;
-    });
-
-    it("should use get the subsegment from tracing service", () => {
-      expect(() => interceptorFn(error)).toThrow();
-
-      expect(tracingService.getSubSegment).toHaveBeenCalledTimes(1);
+      error.config = {
+        [TRACING_CONFIG_KEY]: {
+          subSegment,
+        },
+      } as AxiosRequestConfig;
     });
 
     it("should do nothing if no subsegment is returned", () => {
-      tracingService.getSubSegment = jest.fn().mockReturnValue(undefined);
+      error.config[TRACING_CONFIG_KEY] = {};
 
       expect(() => interceptorFn(error)).toThrow(
         error /* Make sure no other error is thrown because Subsegment is undefined */
@@ -378,14 +319,6 @@ describe("AxiosTracingInterceptor", () => {
     });
 
     it("should rethrow the error", () => {
-      expect(() => interceptorFn(error)).toThrow(error);
-    });
-
-    it("should rethrow the error when tracing was not initialized", () => {
-      tracingService.getSubSegment = jest.fn().mockImplementation(() => {
-        throw new TracingNotInitializedException();
-      });
-
       expect(() => interceptorFn(error)).toThrow(error);
     });
   });

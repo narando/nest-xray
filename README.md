@@ -160,7 +160,6 @@ The TracingCoreModule combines the `AsyncContext` with the official `AWSXRay` cl
 
 ## Known Bugs
 
-- Only one Subsegment can be persisted at a time. This causes issues when multiple outgoing http requests are made in parallel, some subsegments may never be marked as "finished".
 - The XRay Daemon Address can only be configured through the environment variable.
 
 ## License
