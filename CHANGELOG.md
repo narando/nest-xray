@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/narando/nest-xray/compare/v1.2.0...v1.2.1) (2020-05-14)
+
+
+### Bug Fixes
+
+* **client/http:** subsegments get lost in parallel calls ([6f2bdae](https://github.com/narando/nest-xray/commit/6f2bdaee40f57b9f353cdb171c647c52bff12c70))
+
 # [1.2.0](https://github.com/narando/nest-xray/compare/v1.1.1...v1.2.0) (2020-04-15)
 
 
