@@ -1,4 +1,4 @@
-import { DynamicModule, Module, Global } from "@nestjs/common";
+import { DynamicModule, Module } from "@nestjs/common";
 import * as AWSXRay from "aws-xray-sdk";
 import { AsyncHooksModule } from "../async-hooks";
 import { XRAY_CLIENT } from "./constants";
@@ -23,6 +23,7 @@ import { TracingService } from "./tracing.service";
 export class TracingCoreModule {
   static forRoot(options: TracingConfig): DynamicModule {
     return {
+      global: true,
       module: TracingCoreModule,
       providers: [{ provide: TracingConfig, useValue: options }],
     };
