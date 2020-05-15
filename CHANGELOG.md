@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/narando/nest-xray/compare/v1.2.1...v1.2.2) (2020-05-15)
+
+
+### Bug Fixes
+
+* **client/http:** TracingService not available in module context ([fcd1566](https://github.com/narando/nest-xray/commit/fcd1566f2d5b2d0d5b421ddcd54f541552f033a7))
+
 ## [1.2.1](https://github.com/narando/nest-xray/compare/v1.2.0...v1.2.1) (2020-05-14)
 
 
