@@ -95,6 +95,7 @@ describe("TracingAxiosInterceptor", () => {
     it("should persist the subsegment to the request config", () => {
       interceptorFn(config);
 
+      // @ts-ignore
       expect(config[TRACING_CONFIG_KEY].subSegment).toBe(subSegment);
     });
 
@@ -206,6 +207,7 @@ describe("TracingAxiosInterceptor", () => {
     });
 
     it("should do nothing if no subsegment was saved", () => {
+      // @ts-ignore
       response.config[TRACING_CONFIG_KEY] = {};
 
       expect(interceptorFn(response)).toEqual(response);
@@ -291,6 +293,7 @@ describe("TracingAxiosInterceptor", () => {
     });
 
     it("should do nothing if no subsegment is returned", () => {
+      // @ts-ignore
       error.config[TRACING_CONFIG_KEY] = {};
 
       expect(() => interceptorFn(error)).toThrow(
