@@ -16,7 +16,7 @@ import { HEADER_TRACE_CONTEXT } from "./http-tracing.constants";
 export const TRACING_CONFIG_KEY = Symbol("kTracingAxiosInterceptor");
 
 export interface TracingConfig extends AxiosRequestConfig {
-  [TRACING_CONFIG_KEY]: {
+  [TRACING_CONFIG_KEY]?: {
     subSegment: Subsegment;
   };
 }
@@ -66,7 +66,7 @@ export class TracingAxiosInterceptor extends AxiosInterceptor<TracingConfig> {
     return (error) => {
       if (this.isAxiosError(error)) {
         try {
-          const subSegment = error.config[TRACING_CONFIG_KEY].subSegment;
+          const subSegment = this.getSubSegmentFromConfig(error.config);
 
           if (subSegment) {
             subSegment.addError(error);
@@ -90,7 +90,7 @@ export class TracingAxiosInterceptor extends AxiosInterceptor<TracingConfig> {
     // Close Subsegment
     return (response) => {
       try {
-        const subSegment = response.config[TRACING_CONFIG_KEY].subSegment;
+        const subSegment = this.getSubSegmentFromConfig(response.config);
 
         if (subSegment) {
           subSegment.addRemoteRequestData(
@@ -137,7 +137,7 @@ export class TracingAxiosInterceptor extends AxiosInterceptor<TracingConfig> {
     return (error) => {
       if (this.isAxiosError(error)) {
         try {
-          const subSegment = error.config[TRACING_CONFIG_KEY].subSegment;
+          const subSegment = this.getSubSegmentFromConfig(error.config);
 
           if (subSegment) {
             if (error.request && error.response) {
@@ -162,5 +162,14 @@ export class TracingAxiosInterceptor extends AxiosInterceptor<TracingConfig> {
 
       throw error;
     };
+  }
+
+  private getSubSegmentFromConfig(config: TracingConfig): Subsegment | null {
+    const tracingData = config[TRACING_CONFIG_KEY];
+    if (tracingData !== undefined && tracingData.subSegment) {
+      return tracingData.subSegment;
+    }
+
+    return null;
   }
 }
