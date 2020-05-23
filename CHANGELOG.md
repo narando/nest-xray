@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/narando/nest-xray/compare/v1.2.2...v1.2.3) (2020-05-23)
+
+
+### Bug Fixes
+
+* **client/http:** error when used in context without Segment ([a2b7dd3](https://github.com/narando/nest-xray/commit/a2b7dd3ae1e1bcb1173727d2342d4b7475e61912))
+
 ## [1.2.2](https://github.com/narando/nest-xray/compare/v1.2.1...v1.2.2) (2020-05-15)
 
 
