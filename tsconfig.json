@@ -12,6 +12,6 @@
     "incremental": true,
     "strict": true
   },
-  "include": ["lib/**/*"],
+  "include": ["lib/**/*", "test/**/*"],
   "exclude": ["node_modules", "dist"]
 }
