@@ -36,6 +36,9 @@ jobs:
       - run: npm run test:cov
         env:
           CI: true
+      - run: npm run test:e2e
+        env:
+          CI: true
 
       - name: Archive code coverage results
         uses: actions/upload-artifact@v1
