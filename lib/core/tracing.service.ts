@@ -1,5 +1,5 @@
 import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
-import { Segment, Subsegment } from "aws-xray-sdk";
+import { Segment, Subsegment, plugins } from "aws-xray-sdk";
 import { RequestHandler } from "express";
 import { AsyncContext } from "../async-hooks";
 import {
@@ -33,6 +33,7 @@ export class TracingService implements OnModuleInit {
       serviceName: options.serviceName || "example-service",
       rate: options.rate !== undefined ? options.rate : 1,
       daemonAddress: options.daemonAddress || "172.17.0.1:2000",
+      plugins: options.plugins || [plugins.EC2Plugin, plugins.ECSPlugin],
     }; // Set defaults
   }
 
@@ -46,12 +47,7 @@ export class TracingService implements OnModuleInit {
     this.xrayClient.setDaemonAddress(this.config.daemonAddress);
     this.xrayClient.middleware.setSamplingRules(this.getSamplingRules());
 
-    // This might result in "Error loading EC2 plugin" error message if ran
-    // outside of EC2/ECS
-    this.xrayClient.config([
-      this.xrayClient.plugins.EC2Plugin,
-      this.xrayClient.plugins.ECSPlugin,
-    ]);
+    this.xrayClient.config(this.config.plugins);
 
     // Disable errors on missing context
     this.xrayClient.setContextMissingStrategy(() => {});

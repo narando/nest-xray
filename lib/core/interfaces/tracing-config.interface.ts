@@ -1,3 +1,5 @@
+import { plugins } from "aws-xray-sdk";
+
 export class TracingConfig {
   /**
    * Name of the current service.
@@ -18,4 +20,9 @@ export class TracingConfig {
    * This is only documented in the README in section "Known Bugs".
    */
   public daemonAddress?: string;
+
+  /**
+   * Enables use of plugins to capture additional data for segments.
+   */
+  public plugins?: plugins.Plugin[];
 }
