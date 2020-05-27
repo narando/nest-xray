@@ -14,10 +14,10 @@ This module implements [Distributed Tracing](https://opentracing.io/docs/overvie
 
 ### Installation
 
-Install this module and `aws-sdk-xray`:
+Install this module and `aws-xray-sdk`:
 
 ```shell
-$ npm i @narando/nest-xray aws-sdk-xray
+$ npm i @narando/nest-xray aws-xray-sdk
 ```
 
 ### Initialization
