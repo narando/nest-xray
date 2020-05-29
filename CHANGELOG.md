@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/narando/nest-xray/compare/v1.2.4...v1.3.0) (2020-05-29)
+
+
+### Features
+
+* **core:** allow setting custom XRay plugins ([c82f824](https://github.com/narando/nest-xray/commit/c82f8248d30282ae8caccbbb9f7559e39091b706))
+
 ## [1.2.4](https://github.com/narando/nest-xray/compare/v1.2.3...v1.2.4) (2020-05-29)
 
 
