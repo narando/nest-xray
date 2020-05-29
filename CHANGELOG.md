@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/narando/nest-xray/compare/v1.2.3...v1.2.4) (2020-05-29)
+
+
+### Bug Fixes
+
+* duplicate TracingService instances without configuration ([4d89a75](https://github.com/narando/nest-xray/commit/4d89a75928dbd56c242ece9c8f3ea6c8abb6329e))
+
 ## [1.2.3](https://github.com/narando/nest-xray/compare/v1.2.2...v1.2.3) (2020-05-23)
 
 
