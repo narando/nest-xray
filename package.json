@@ -27,7 +27,6 @@
     "@nestjs/core": "^6.7.0 || ^7.0.0",
     "aws-xray-sdk": "^2.5.0",
     "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.0",
     "rxjs": "^6.5.3"
   },
   "devDependencies": {
