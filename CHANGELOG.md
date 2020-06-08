@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/narando/nest-xray/compare/v1.3.0...v1.3.1) (2020-06-08)
+
+
+### Bug Fixes
+
+* **deps:** remove rimraf from peerDeps ([bb45875](https://github.com/narando/nest-xray/commit/bb45875e9bc843361575c48e39b10b8a194374c9))
+
 # [1.3.0](https://github.com/narando/nest-xray/compare/v1.2.4...v1.3.0) (2020-05-29)
 
 
