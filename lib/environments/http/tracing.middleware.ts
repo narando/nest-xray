@@ -38,20 +38,23 @@ export class HttpTracingMiddleware implements NestMiddleware {
     const {
       segment: {
         http: {
-          request: { url },
+          request: { url: xrayParsedUrl },
         },
       },
       originalUrl,
     } = req;
 
-    let patchedURL = url;
+    // originalUrl is relative and requires a generic base
+    const parsedOriginalUrl = new URL(originalUrl, "https://example.com/");
+    const url = new URL(xrayParsedUrl);
 
-    if (patchedURL.endsWith("/")) {
-      patchedURL = patchedURL.substring(0, patchedURL.length - 1);
-    }
+    // Remove SearchParams/QueryParams
+    // See #140
+    url.search = "";
 
-    patchedURL = `${patchedURL}${originalUrl}`;
+    // Add missing path to url
+    url.pathname = parsedOriginalUrl.pathname;
 
-    return patchedURL;
+    return url.href;
   }
 }
