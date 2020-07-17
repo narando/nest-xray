@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/narando/nest-xray/compare/v1.3.1...v1.3.2) (2020-07-17)
+
+
+### Bug Fixes
+
+* **env/http:** query parameter included twice [#140](https://github.com/narando/nest-xray/issues/140) ([395b42c](https://github.com/narando/nest-xray/commit/395b42ccd97aff8017cea322b874af7d53448ea9))
+
 ## [1.3.1](https://github.com/narando/nest-xray/compare/v1.3.0...v1.3.1) (2020-06-08)
 
 
