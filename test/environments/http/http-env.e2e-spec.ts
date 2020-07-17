@@ -89,6 +89,17 @@ describe("HttpEnvironment (e2e)", () => {
     );
   });
 
+  it("should correctly parse the request url when using query parameters", async () => {
+    // Regression test for #140
+    await request(app.getHttpServer()).get("/url?id=1234").expect(200);
+
+    expect(sendSegment).toHaveBeenCalledTimes(1);
+
+    const submittedURL = sendSegment.mock.calls[0][0].http.request.url;
+
+    expect(submittedURL).toMatch(/^http:\/\/127.0.0.1:[0-9]{1,5}\/url$/);
+  });
+
   it("should send a segment for a 4xx error", async () => {
     service.index = jest.fn().mockRejectedValue(new BadRequestException());
 
