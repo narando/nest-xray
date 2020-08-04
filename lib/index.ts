@@ -4,3 +4,5 @@ export { TracingConfig } from "./core/interfaces";
 export { HttpTracingModule } from "./clients/http";
 
 export { TracingModule } from "./tracing.module";
+
+export * from "./exceptions";
