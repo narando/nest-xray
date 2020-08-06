@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/narando/nest-xray/compare/v1.3.2...v1.4.0) (2020-08-06)
+
+
+### Bug Fixes
+
+* broken prototype-chain for custom exceptions ([9b9978e](https://github.com/narando/nest-xray/commit/9b9978ef3f6b5f3ea9895c083841de85564ce085))
+
+
+### Features
+
+* export custom exceptions ([27a381c](https://github.com/narando/nest-xray/commit/27a381c339329128483d49f7cd2fa99f82d2d766))
+
 ## [1.3.2](https://github.com/narando/nest-xray/compare/v1.3.1...v1.3.2) (2020-07-17)
 
 
