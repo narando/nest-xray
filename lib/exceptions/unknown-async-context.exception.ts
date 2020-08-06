@@ -3,5 +3,7 @@ export class UnknownAsyncContextException extends Error {
     super(
       `Async ID (${executionAsyncId}) is not registered within internal cache.`
     );
+
+    Object.setPrototypeOf(this, UnknownAsyncContextException.prototype);
   }
 }
