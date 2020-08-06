@@ -25,7 +25,7 @@
   "peerDependencies": {
     "@nestjs/common": "^6.7.0 || ^7.0.0",
     "@nestjs/core": "^6.7.0 || ^7.0.0",
-    "aws-xray-sdk": "^2.5.0 || ^3.0.0",
+    "aws-xray-sdk": "^2.5.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.3"
   },
@@ -74,4 +74,5 @@
     "type": "git",
     "url": "https://github.com/narando/nest-xray"
   }
+
 }
