@@ -42,7 +42,7 @@
     "@types/supertest": "2.0.10",
     "aws-xray-sdk": "2.5.0",
     "jest": "26.4.2",
-    "prettier": "2.0.5",
+    "prettier": "2.1.1",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "rxjs": "6.6.2",
