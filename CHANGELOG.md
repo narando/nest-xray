@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/narando/nest-xray/compare/v1.4.0...v1.4.1) (2020-10-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency aws-xray-sdk to v3 ([2f87b3d](https://github.com/narando/nest-xray/commit/2f87b3dcc5cc464ba62b82162362a60aa255561f))
+
 # [1.4.0](https://github.com/narando/nest-xray/compare/v1.3.2...v1.4.0) (2020-08-06)
 
 
