@@ -10,7 +10,6 @@ interface PatchSegmentURLRequest {
       };
     };
   };
-  originalUrl: string;
 }
 
 @Injectable()
@@ -24,8 +23,7 @@ export class HttpTracingMiddleware implements NestMiddleware {
   public use(req: any, res: any, next: () => void) {
     this.middleware(req, res, () => {
       if (req.segment) {
-        // Nest.js does not use default express Routing, so we have to patch
-        // the URL to include path.
+        // AWS X-Ray does not remove the query string from incoming requests
         req.segment.http.request.url = this.patchSegmentURL(req);
 
         this.tracingService.setRootSegment(req.segment);
@@ -41,20 +39,15 @@ export class HttpTracingMiddleware implements NestMiddleware {
           request: { url: xrayParsedUrl },
         },
       },
-      originalUrl,
     } = req;
 
-    // originalUrl is relative and requires a generic base
-    const parsedOriginalUrl = new URL(originalUrl, "https://example.com/");
-    const url = new URL(xrayParsedUrl);
+    // xrayParsedUrl is relative and requires a generic base
+    const xrayUrl = new URL(xrayParsedUrl, "https://example.com/");
 
     // Remove SearchParams/QueryParams
     // See #140
-    url.search = "";
+    xrayUrl.search = "";
 
-    // Add missing path to url
-    url.pathname = parsedOriginalUrl.pathname;
-
-    return url.href;
+    return xrayUrl.href;
   }
 }
