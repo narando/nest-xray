@@ -42,9 +42,8 @@ describe("HttpTracingMiddleware", () => {
       req = {
         segment: {
           id: 1337,
-          http: { request: { url: "https://example.com/" } },
+          http: { request: { url: "https://example.com/path?foo=bar" } },
         },
-        originalUrl: "/path",
       };
       res = {};
       next = jest.fn();
@@ -63,7 +62,7 @@ describe("HttpTracingMiddleware", () => {
       );
     });
 
-    it("should patch the segment http url", async () => {
+    it("should remove the query string", async () => {
       await new Promise((resolve) => tracingMiddleware.use(req, res, resolve));
 
       expect(req.segment.http.request.url).toEqual("https://example.com/path");

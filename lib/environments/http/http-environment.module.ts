@@ -10,8 +10,8 @@ export class HttpEnvironmentModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AsyncHooksMiddleware)
-      .forRoutes("*")
+      .forRoutes("/")
       .apply(HttpTracingMiddleware)
-      .forRoutes("*");
+      .forRoutes("/");
   }
 }
