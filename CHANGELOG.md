@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/narando/nest-xray/compare/v1.4.1...v1.4.2) (2020-10-15)
+
+
+### Bug Fixes
+
+* **env/http:** segment has invalid URL when sampling decision is made ([dda8d58](https://github.com/narando/nest-xray/commit/dda8d58fd8583704dd47fc3230218f5e5ba3b0da))
+
 ## [1.4.1](https://github.com/narando/nest-xray/compare/v1.4.0...v1.4.1) (2020-10-12)
 
 
