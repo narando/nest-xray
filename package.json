@@ -48,7 +48,7 @@
     "rxjs": "6.6.3",
     "supertest": "4.0.2",
     "ts-jest": "26.5.0",
-    "ts-loader": "8.0.14",
+    "ts-loader": "8.0.15",
     "ts-node": "9.1.1",
     "tsconfig-paths": "3.9.0",
     "tslint": "6.1.3",
