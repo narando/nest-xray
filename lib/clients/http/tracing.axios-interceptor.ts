@@ -5,8 +5,7 @@ import {
   AxiosResponseCustomConfig,
 } from "@narando/nest-axios-interceptor";
 import { HttpService, Injectable } from "@nestjs/common";
-import { Subsegment } from "aws-xray-sdk";
-import { getCauseTypeFromHttpStatus } from "aws-xray-sdk-core/lib/utils";
+import { Subsegment, utils } from "aws-xray-sdk";
 import { AxiosRequestConfig } from "axios";
 import { ClientRequest, IncomingMessage } from "http";
 import { TracingService } from "../../core";
@@ -20,6 +19,8 @@ export interface TracingConfig extends AxiosRequestConfig {
     subSegment: Subsegment;
   };
 }
+
+const { getCauseTypeFromHttpStatus } = utils;
 
 @Injectable()
 export class TracingAxiosInterceptor extends AxiosInterceptor<TracingConfig> {
