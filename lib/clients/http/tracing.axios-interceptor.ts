@@ -5,8 +5,7 @@ import {
   AxiosResponseCustomConfig,
 } from "@narando/nest-axios-interceptor";
 import { HttpService, Injectable } from "@nestjs/common";
-import { Subsegment } from "aws-xray-sdk";
-import { utils } from "aws-xray-sdk-core";
+import { Subsegment, utils } from "aws-xray-sdk";
 import { AxiosRequestConfig } from "axios";
 import { ClientRequest, IncomingMessage } from "http";
 import { TracingService } from "../../core";
@@ -14,6 +13,8 @@ import { TracingNotInitializedException } from "../../exceptions";
 import { HEADER_TRACE_CONTEXT } from "./http-tracing.constants";
 
 export const TRACING_CONFIG_KEY = Symbol("kTracingAxiosInterceptor");
+
+const { getCauseTypeFromHttpStatus } = utils;
 
 export interface TracingConfig extends AxiosRequestConfig {
   [TRACING_CONFIG_KEY]?: {
@@ -102,7 +103,7 @@ export class TracingAxiosInterceptor extends AxiosInterceptor<TracingConfig> {
             true
           );
 
-          const cause = utils.getCauseTypeFromHttpStatus(response.status);
+          const cause = getCauseTypeFromHttpStatus(response.status);
 
           switch (cause) {
             case "error":
