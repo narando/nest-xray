@@ -6,7 +6,7 @@ import {
 } from "@narando/nest-axios-interceptor";
 import { HttpService, Injectable } from "@nestjs/common";
 import { Subsegment } from "aws-xray-sdk";
-import { getCauseTypeFromHttpStatus } from "aws-xray-sdk-core/lib/utils";
+import { utils } from "aws-xray-sdk-core";
 import { AxiosRequestConfig } from "axios";
 import { ClientRequest, IncomingMessage } from "http";
 import { TracingService } from "../../core";
@@ -102,7 +102,7 @@ export class TracingAxiosInterceptor extends AxiosInterceptor<TracingConfig> {
             true
           );
 
-          const cause = getCauseTypeFromHttpStatus(response.status);
+          const cause = utils.getCauseTypeFromHttpStatus(response.status);
 
           switch (cause) {
             case "error":
