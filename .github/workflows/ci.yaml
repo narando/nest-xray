@@ -9,9 +9,9 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 10.x # Active LTS
-          - 12.x # Active LTS
-          - 13.x # Current
+          - 14.x # Maintenance
+          - 16.x # Active
+          - 17.x # Current
 
     steps:
       - uses: actions/checkout@v2
