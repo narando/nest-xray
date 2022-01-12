@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/narando/nest-xray/compare/v1.5.1...v1.5.2) (2022-01-12)
+
+
+### Bug Fixes
+
+* **lib:** linting after prettier update ([080c949](https://github.com/narando/nest-xray/commit/080c94989dd2ce639ce7e4b616d98364b083fe4f))
+
 ## [1.5.1](https://github.com/narando/nest-xray/compare/v1.5.0...v1.5.1) (2022-01-12)
 
 
