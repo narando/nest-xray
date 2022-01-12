@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/narando/nest-xray/compare/v1.4.2...v1.5.0) (2022-01-12)
+
+
+### Features
+
+* **deps:** bump to node 16 ([134771b](https://github.com/narando/nest-xray/commit/134771b098c9a657db7c45cb1be11d01baf5dc7c))
+
 ## [1.4.2](https://github.com/narando/nest-xray/compare/v1.4.1...v1.4.2) (2020-10-15)
 
 
