@@ -1,3 +1,12 @@
+## [1.5.1](https://github.com/narando/nest-xray/compare/v1.5.0...v1.5.1) (2022-01-12)
+
+
+### Bug Fixes
+
+* support aws xray sdk 3.3.3 ([9e596cd](https://github.com/narando/nest-xray/commit/9e596cd561ba0537d083ff0690dabb78621a564d))
+* **test:** broken imports of SegmentEmitter ([39ab6d7](https://github.com/narando/nest-xray/commit/39ab6d72ff8078c3a935ed1478230f71f8edca84))
+* **test:** hotpatch regex for subsegments ([e242114](https://github.com/narando/nest-xray/commit/e2421146a1046c6dec1dcbe84287df9efb7996ff))
+
 # [1.5.0](https://github.com/narando/nest-xray/compare/v1.4.2...v1.5.0) (2022-01-12)
 
 
