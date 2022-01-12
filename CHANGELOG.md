@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/narando/nest-xray/compare/v1.5.2...v1.5.3) (2022-01-12)
+
+
+### Bug Fixes
+
+* **lib:** typings after upgrading to typescript 4.5 ([faefd16](https://github.com/narando/nest-xray/commit/faefd163a8b316b41445fe86894f4041d25e9e81))
+
 ## [1.5.2](https://github.com/narando/nest-xray/compare/v1.5.1...v1.5.2) (2022-01-12)
 
 
