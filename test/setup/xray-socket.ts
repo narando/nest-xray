@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as SegmentEmitter from "aws-xray-sdk-core/lib/segment_emitter.js";
+import * as SegmentEmitter from "aws-xray-sdk-core/dist/lib/segment_emitter.js";
 
 // By default the AWS XRay SDK opens a UDP socket and keeps it for the whole lifetime.
 // This keeps the testsuite from finishing. By disabling the reusable socket,
