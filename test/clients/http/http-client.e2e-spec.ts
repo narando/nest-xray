@@ -152,7 +152,7 @@ describe("HttpClient (e2e)", () => {
               request: expect.objectContaining({
                 method: "GET",
                 url: expect.stringMatching(
-                  /^http:\/\/127.0.0.1:[0-9]{1,5}\/example-endpoint/
+                  /^http:\/\/127.0.0.1(:[0-9]{1,5})?\/example-endpoint/
                 ),
               }),
               response: expect.objectContaining({
