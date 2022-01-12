@@ -28,12 +28,12 @@ describe("TracingAxiosInterceptor", () => {
   let axios: AxiosInstance;
 
   beforeEach(async () => {
-    axios = ({
+    axios = {
       interceptors: {
         request: { use: jest.fn() },
         response: { use: jest.fn() },
       },
-    } as any) as AxiosInstance;
+    } as any as AxiosInstance;
 
     testingModule = await Test.createTestingModule({
       providers: [
@@ -133,13 +133,13 @@ describe("TracingAxiosInterceptor", () => {
     beforeEach(() => {
       interceptorFn = interceptor.requestRejected();
 
-      subSegment = ({
+      subSegment = {
         id: "1337",
         name: "http-call",
         addError: jest.fn(),
         addFaultFlag: jest.fn(),
         close: jest.fn(),
-      } as any) as Subsegment;
+      } as any as Subsegment;
 
       // @ts-ignore
       error = new Error("Error in request");
@@ -181,14 +181,14 @@ describe("TracingAxiosInterceptor", () => {
     beforeEach(() => {
       interceptorFn = interceptor.responseFulfilled();
 
-      subSegment = ({
+      subSegment = {
         id: "1337",
         name: "http-call",
         addRemoteRequestData: jest.fn(),
         addErrorFlag: jest.fn(),
         addFaultFlag: jest.fn(),
         close: jest.fn(),
-      } as any) as Subsegment;
+      } as any as Subsegment;
 
       response = {
         status: 200,
@@ -270,12 +270,12 @@ describe("TracingAxiosInterceptor", () => {
     beforeEach(() => {
       interceptorFn = interceptor.responseRejected();
 
-      subSegment = ({
+      subSegment = {
         id: "1337",
         name: "http-call",
         addRemoteRequestData: jest.fn(),
         close: jest.fn(),
-      } as any) as Subsegment;
+      } as any as Subsegment;
 
       error = new Error("Error in request") as AxiosError;
       error.isAxiosError = true;

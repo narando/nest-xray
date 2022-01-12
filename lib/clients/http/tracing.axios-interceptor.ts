@@ -40,9 +40,8 @@ export class TracingAxiosInterceptor extends AxiosInterceptor<TracingConfig> {
           subSegment,
         };
 
-        config.headers[
-          HEADER_TRACE_CONTEXT
-        ] = this.tracingService.getTracingHeader(subSegment);
+        config.headers[HEADER_TRACE_CONTEXT] =
+          this.tracingService.getTracingHeader(subSegment);
 
         return config;
       } catch (err) {

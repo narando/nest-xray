@@ -285,9 +285,8 @@ describe("TracingService", () => {
       };
       rootSegment.addNewSubsegment = jest.fn().mockReturnValue(subSegment);
 
-      const returnedSubSegment = tracingService.createSubSegment(
-        "testing-segment"
-      );
+      const returnedSubSegment =
+        tracingService.createSubSegment("testing-segment");
 
       expect(returnedSubSegment).toBe(subSegment);
     });
