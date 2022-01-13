@@ -6,5 +6,6 @@
       "automerge": true
     }
   ],
-  "extends": ["config:base", "schedule:weekly"]
+  "extends": ["config:base", "schedule:weekly"],
+  "reviewers": ["MarcMogdanz"]
 }
