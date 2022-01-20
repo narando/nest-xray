@@ -4,7 +4,8 @@ import {
   AxiosRejectedInterceptor,
   AxiosResponseCustomConfig,
 } from "@narando/nest-axios-interceptor";
-import { HttpService, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
+import { HttpService } from "@nestjs/axios";
 import { Subsegment, utils } from "aws-xray-sdk";
 import { AxiosRequestConfig } from "axios";
 import { ClientRequest, IncomingMessage } from "http";
@@ -40,8 +41,9 @@ export class TracingAxiosInterceptor extends AxiosInterceptor<TracingConfig> {
           subSegment,
         };
 
-        config.headers[HEADER_TRACE_CONTEXT] =
-          this.tracingService.getTracingHeader(subSegment);
+        if (config.headers)
+          config.headers[HEADER_TRACE_CONTEXT] =
+            this.tracingService.getTracingHeader(subSegment);
 
         return config;
       } catch (err) {

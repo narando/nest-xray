@@ -2,7 +2,7 @@ import {
   AxiosFulfilledInterceptor,
   AxiosRejectedInterceptor,
 } from "@narando/nest-axios-interceptor";
-import { HttpService } from "@nestjs/common";
+import { HttpService } from "@nestjs/axios";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Subsegment } from "aws-xray-sdk";
 import {
@@ -203,7 +203,7 @@ describe("TracingAxiosInterceptor", () => {
             subSegment,
           },
         } as AxiosRequestConfig,
-      } as AxiosResponse;
+      } as unknown as AxiosResponse;
     });
 
     it("should do nothing if no subsegment was saved", () => {
