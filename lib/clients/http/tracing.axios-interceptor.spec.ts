@@ -2,7 +2,7 @@ import {
   AxiosFulfilledInterceptor,
   AxiosRejectedInterceptor,
 } from "@narando/nest-axios-interceptor";
-import { HttpService } from "@nestjs/common";
+import { HttpService } from "@nestjs/axios";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Subsegment } from "aws-xray-sdk";
 import {
@@ -192,9 +192,11 @@ describe("TracingAxiosInterceptor", () => {
 
       response = {
         status: 200,
+        statusText: "OK",
         headers: {
           accept: "application/json",
         },
+        data: {},
         request: {
           id: 321312, // Fake data for equality check
         },

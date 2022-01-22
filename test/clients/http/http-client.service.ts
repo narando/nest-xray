@@ -1,4 +1,5 @@
-import { HttpService, Injectable } from "@nestjs/common";
+import { HttpService } from "@nestjs/axios";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class HttpClientService {
@@ -7,6 +8,6 @@ export class HttpClientService {
   async makeHttpRequest(): Promise<string> {
     const res = await this.httpService.get("/example-endpoint").toPromise();
 
-    return res.data;
+    return res!.data;
   }
 }

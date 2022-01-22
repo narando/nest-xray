@@ -12,6 +12,11 @@ This module implements [Distributed Tracing](https://opentracing.io/docs/overvie
 
 ## Usage
 
+> ⚠️ If you want to use `@narando/nest-xray` with NestJS Version 6 or 7,
+> please use the v1 release.
+>
+> The v2 release is only compatible with NestJS Version 8 and @nestjs/axios package.
+
 ### Installation
 
 Install this module and `aws-xray-sdk`:
@@ -69,12 +74,12 @@ The premade _clients_ will automatically create a subsegment for all requests ma
 
 #### `HttpService`
 
-This _client_ is a drop-in replacement for the [`HttpService`](https://docs.nestjs.com/techniques/http-module) from `@nestjs/common`.
+This _client_ is a drop-in replacement for the [`HttpService`](https://docs.nestjs.com/techniques/http-module) from `@nestjs/axios`.
 
 To use it, you must only replace the imports like this:
 
 ```diff
-- import { HttpModule } from "@nestjs/common"
+- import { HttpModule } from "@nestjs/axios"
 + import { HttpTracingModule } from "@narando/nest-xray"
 
  @Module({

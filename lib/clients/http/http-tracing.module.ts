@@ -1,10 +1,5 @@
-import {
-  DynamicModule,
-  HttpModule,
-  HttpModuleAsyncOptions,
-  HttpService,
-  Module,
-} from "@nestjs/common";
+import { HttpModule, HttpModuleAsyncOptions, HttpService } from "@nestjs/axios";
+import { DynamicModule, Module } from "@nestjs/common";
 import { TracingAxiosInterceptor } from "./tracing.axios-interceptor";
 
 @Module({
