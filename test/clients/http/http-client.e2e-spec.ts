@@ -1,5 +1,6 @@
 // @ts-ignore
-import { HttpService, INestApplication } from "@nestjs/common";
+import { HttpService } from "@nestjs/axios";
+import { INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Segment } from "aws-xray-sdk";
 import * as request from "supertest";
