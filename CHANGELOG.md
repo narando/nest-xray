@@ -1,3 +1,17 @@
+# [2.0.0](https://github.com/narando/nest-xray/compare/v1.5.3...v2.0.0) (2022-01-22)
+
+
+### Features
+
+* **deps:** support NestJS 8 and @nestjs/axios ([1b15ba7](https://github.com/narando/nest-xray/commit/1b15ba747f98fc2a51c616dd99e137a44b08e298))
+
+
+### BREAKING CHANGES
+
+* **deps:** Drop support for NestJS <8 and the HttpService from
+@nestjs/common. Instead add support for NestJS 8 and the HttpService from
+@nestjs/axios.
+
 ## [1.5.3](https://github.com/narando/nest-xray/compare/v1.5.2...v1.5.3) (2022-01-12)
 
 
