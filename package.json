@@ -42,7 +42,7 @@
     "@types/jest": "27.4.1",
     "@types/node": "16.11.33",
     "@types/supertest": "2.0.12",
-    "aws-xray-sdk": "3.3.4",
+    "aws-xray-sdk": "3.3.5",
     "jest": "27.5.1",
     "prettier": "2.5.1",
     "reflect-metadata": "0.1.13",
