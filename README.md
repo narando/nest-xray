@@ -15,7 +15,7 @@ This module implements [Distributed Tracing](https://opentracing.io/docs/overvie
 > ⚠️ If you want to use `@narando/nest-xray` with NestJS Version 6 or 7,
 > please use the v1 release.
 >
-> The v2 release is only compatible with NestJS Version 8 and @nestjs/axios package.
+> The v2 release is only compatible with NestJS Version 8 or 9 and @nestjs/axios `>=0.0.5 <=0.1.0`.
 
 ### Installation
 
