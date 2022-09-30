@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/narando/nest-xray/compare/v2.0.0...v2.1.0) (2022-09-30)
+
+
+### Features
+
+* NestJS v9 Compatibility ([#392](https://github.com/narando/nest-xray/issues/392)) ([9b34c04](https://github.com/narando/nest-xray/commit/9b34c043bf6d5343e60670ff3cd2cd1151ed8d4e))
+
 # [2.0.0](https://github.com/narando/nest-xray/compare/v1.5.3...v2.0.0) (2022-01-22)
 
 
