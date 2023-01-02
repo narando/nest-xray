@@ -23,7 +23,7 @@
     "@narando/nest-axios-interceptor": "2.2.0"
   },
   "peerDependencies": {
-    "@nestjs/axios": ">=0.0.5 <=0.1.0",
+    "@nestjs/axios": ">=0.0.5 <=1.0.1",
     "@nestjs/common": "^8.0.0 || ^9.0.0",
     "@nestjs/core": "^8.0.0 || ^9.0.0",
     "aws-xray-sdk": "^2.5.0 || ^3.0.0",
@@ -31,7 +31,7 @@
     "rxjs": "^7.0.0"
   },
   "devDependencies": {
-    "@nestjs/axios": "0.1.0",
+    "@nestjs/axios": "1.0.1",
     "@nestjs/cli": "9.1.8",
     "@nestjs/common": "9.2.0",
     "@nestjs/core": "9.2.0",
