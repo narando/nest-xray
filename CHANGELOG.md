@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/TheRealMkadmi/nest-xray/compare/v1.0.0...v1.0.1) (2024-01-10)
+
+
+### Bug Fixes
+
+* **package.json:** add access to package.json ([73fb1b2](https://github.com/TheRealMkadmi/nest-xray/commit/73fb1b2b585820df09548d329f6d10e5faa86c29))
+
 # 1.0.0 (2024-01-10)
 
 
