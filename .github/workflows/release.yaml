@@ -23,7 +23,7 @@ jobs:
 
       # needed for npm publishing
       - run: npm run build
-
+      - run: npm config set access public
       - run: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
