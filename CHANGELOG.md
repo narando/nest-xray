@@ -1,3 +1,54 @@
+# 1.0.0 (2024-01-10)
+
+
+### Bug Fixes
+
+* broken prototype-chain for custom exceptions ([9b9978e](https://github.com/TheRealMkadmi/nest-xray/commit/9b9978ef3f6b5f3ea9895c083841de85564ce085))
+* **ci:** add missing step to release pipeline ([18d4d69](https://github.com/TheRealMkadmi/nest-xray/commit/18d4d69f183cee85b5dc6fa063a392085bea590d))
+* **ci:** fix version in package.json ([ff95014](https://github.com/TheRealMkadmi/nest-xray/commit/ff95014cc10310520de7931840c95c208ec3b1b4))
+* **ci:** reference to coverage folder ([b38a3f1](https://github.com/TheRealMkadmi/nest-xray/commit/b38a3f1f982f982477e37c9b8d5be5b228741e51))
+* **client/http:** error when used in context without Segment ([a2b7dd3](https://github.com/TheRealMkadmi/nest-xray/commit/a2b7dd3ae1e1bcb1173727d2342d4b7475e61912))
+* **client/http:** subsegments get lost in parallel calls ([6f2bdae](https://github.com/TheRealMkadmi/nest-xray/commit/6f2bdaee40f57b9f353cdb171c647c52bff12c70))
+* **client/http:** TracingService not available in module context ([fcd1566](https://github.com/TheRealMkadmi/nest-xray/commit/fcd1566f2d5b2d0d5b421ddcd54f541552f033a7))
+* **deps:** remove rimraf from peerDeps ([bb45875](https://github.com/TheRealMkadmi/nest-xray/commit/bb45875e9bc843361575c48e39b10b8a194374c9))
+* **deps:** update dependency aws-xray-sdk to v3 ([2f87b3d](https://github.com/TheRealMkadmi/nest-xray/commit/2f87b3dcc5cc464ba62b82162362a60aa255561f))
+* duplicate TracingService instances without configuration ([4d89a75](https://github.com/TheRealMkadmi/nest-xray/commit/4d89a75928dbd56c242ece9c8f3ea6c8abb6329e))
+* **env/http:** query parameter included twice [#140](https://github.com/TheRealMkadmi/nest-xray/issues/140) ([395b42c](https://github.com/TheRealMkadmi/nest-xray/commit/395b42ccd97aff8017cea322b874af7d53448ea9))
+* **env/http:** segment has invalid URL when sampling decision is made ([dda8d58](https://github.com/TheRealMkadmi/nest-xray/commit/dda8d58fd8583704dd47fc3230218f5e5ba3b0da))
+* **hooks:** throw named exception if async id is unknown ([cbdbd59](https://github.com/TheRealMkadmi/nest-xray/commit/cbdbd59d2c653b7fcc76b9835cdcca2984fe772f))
+* **http-env.e2e-spec.ts:** fix package name ([f709b0d](https://github.com/TheRealMkadmi/nest-xray/commit/f709b0db8d9a176fb6ae13d379fee3f5dfbbad45))
+* **http:** ignore missing tracing context in HttpService [#75](https://github.com/TheRealMkadmi/nest-xray/issues/75) ([b03160d](https://github.com/TheRealMkadmi/nest-xray/commit/b03160d03ee590ab7b416830a58ba8fb0508acc5))
+* **lib:** linting after prettier update ([080c949](https://github.com/TheRealMkadmi/nest-xray/commit/080c94989dd2ce639ce7e4b616d98364b083fe4f))
+* **lib:** typings after upgrading to typescript 4.5 ([faefd16](https://github.com/TheRealMkadmi/nest-xray/commit/faefd163a8b316b41445fe86894f4041d25e9e81))
+* support aws xray sdk 3.3.3 ([9e596cd](https://github.com/TheRealMkadmi/nest-xray/commit/9e596cd561ba0537d083ff0690dabb78621a564d))
+* **test:** broken imports of SegmentEmitter ([39ab6d7](https://github.com/TheRealMkadmi/nest-xray/commit/39ab6d72ff8078c3a935ed1478230f71f8edca84))
+* **test:** hotpatch regex for subsegments ([e242114](https://github.com/TheRealMkadmi/nest-xray/commit/e2421146a1046c6dec1dcbe84287df9efb7996ff))
+* **tests:** support new types (I'm not a ts dev) ([e9b5853](https://github.com/TheRealMkadmi/nest-xray/commit/e9b5853f3b8228ed9906a620e8611e341dd9a653))
+* throw special exception if TracingService is used in unknown context ([688087c](https://github.com/TheRealMkadmi/nest-xray/commit/688087c09af4b8a2c95f1a8931f9e8e0b3c88d3b))
+
+
+### Features
+
+* add Github Actions CI ([e3040c5](https://github.com/TheRealMkadmi/nest-xray/commit/e3040c593e4b1b504a98d30cb68822254fb387af))
+* add initial implementation ([65311a5](https://github.com/TheRealMkadmi/nest-xray/commit/65311a5f6a1d124bea7c081d63d5af28d130a4d5))
+* add initial project setup ([ff161bc](https://github.com/TheRealMkadmi/nest-xray/commit/ff161bcabadd9862479ea1e4d4e18d8db1416101))
+* add MIT license ([b201115](https://github.com/TheRealMkadmi/nest-xray/commit/b201115839449c68638bf570af9311a8af08c1a4))
+* allow usages with Nestjs v7 ([13e19f0](https://github.com/TheRealMkadmi/nest-xray/commit/13e19f0a6750b86034cde4946370a319af267404))
+* **ci:** add automatic changelog and releases on npm ([262b150](https://github.com/TheRealMkadmi/nest-xray/commit/262b1502819af8ba879291b9750d6a55f36b08a3))
+* **core:** allow setting custom XRay plugins ([c82f824](https://github.com/TheRealMkadmi/nest-xray/commit/c82f8248d30282ae8caccbbb9f7559e39091b706))
+* **deps:** bump to node 16 ([134771b](https://github.com/TheRealMkadmi/nest-xray/commit/134771b098c9a657db7c45cb1be11d01baf5dc7c))
+* **deps:** support NestJS 8 and @nestjs/axios ([1b15ba7](https://github.com/TheRealMkadmi/nest-xray/commit/1b15ba747f98fc2a51c616dd99e137a44b08e298))
+* export custom exceptions ([27a381c](https://github.com/TheRealMkadmi/nest-xray/commit/27a381c339329128483d49f7cd2fa99f82d2d766))
+* NestJS v9 Compatibility ([#392](https://github.com/TheRealMkadmi/nest-xray/issues/392)) ([9b34c04](https://github.com/TheRealMkadmi/nest-xray/commit/9b34c043bf6d5343e60670ff3cd2cd1151ed8d4e))
+* refactor code to enable multiple environments ([96bec82](https://github.com/TheRealMkadmi/nest-xray/commit/96bec82f6cde88702d167760d5d19b9661aedfe3))
+
+
+### BREAKING CHANGES
+
+* **deps:** Drop support for NestJS <8 and the HttpService from
+@nestjs/common. Instead add support for NestJS 8 and the HttpService from
+@nestjs/axios.
+
 # [2.1.0](https://github.com/narando/nest-xray/compare/v2.0.0...v2.1.0) (2022-09-30)
 
 
