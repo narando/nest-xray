@@ -12,6 +12,7 @@ import { ClientRequest, IncomingMessage } from "http";
 import { TracingService } from "../../core";
 import { TracingNotInitializedException } from "../../exceptions";
 import { HEADER_TRACE_CONTEXT } from "./http-tracing.constants";
+import axios, { AxiosRequestHeaders, AxiosHeaders } from "axios";
 
 export const TRACING_CONFIG_KEY = Symbol("kTracingAxiosInterceptor");
 
@@ -19,6 +20,7 @@ export interface TracingConfig extends AxiosRequestConfig {
   [TRACING_CONFIG_KEY]?: {
     subSegment: Subsegment;
   };
+  headers: AxiosRequestHeaders;
 }
 
 @Injectable()
@@ -42,7 +44,7 @@ export class TracingAxiosInterceptor extends AxiosInterceptor<TracingConfig> {
         };
 
         if (!config.headers) {
-          config.headers = {};
+          config.headers = new AxiosHeaders({});
         }
 
         config.headers[HEADER_TRACE_CONTEXT] =

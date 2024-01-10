@@ -7,9 +7,11 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { Subsegment } from "aws-xray-sdk";
 import {
   AxiosError,
+  AxiosHeaders,
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
+  InternalAxiosRequestConfig,
 } from "axios";
 import { TracingService } from "../../core";
 import { TracingNotInitializedException } from "../../exceptions";
@@ -17,6 +19,7 @@ import { HEADER_TRACE_CONTEXT } from "./http-tracing.constants";
 import {
   TracingAxiosInterceptor,
   TRACING_CONFIG_KEY,
+  TracingConfig,
 } from "./tracing.axios-interceptor";
 
 describe("TracingAxiosInterceptor", () => {
@@ -60,7 +63,7 @@ describe("TracingAxiosInterceptor", () => {
   });
 
   describe("requestFulfilled", () => {
-    let interceptorFn: AxiosFulfilledInterceptor<AxiosRequestConfig>;
+    let interceptorFn: AxiosFulfilledInterceptor<TracingConfig>;
     let config: AxiosRequestConfig;
     let subSegment: Subsegment;
 
@@ -68,7 +71,7 @@ describe("TracingAxiosInterceptor", () => {
       interceptorFn = interceptor.requestFulfilled();
 
       config = {
-        headers: {},
+        headers: new AxiosHeaders({}),
       };
 
       subSegment = { id: "1337", name: "http-call" } as Subsegment;
@@ -84,7 +87,7 @@ describe("TracingAxiosInterceptor", () => {
     });
 
     it("should create a new sub segment", () => {
-      interceptorFn(config);
+      interceptorFn(config as TracingConfig);
 
       expect(tracingService.createSubSegment).toHaveBeenCalledTimes(1);
       expect(tracingService.createSubSegment).toHaveBeenCalledWith(
@@ -93,14 +96,14 @@ describe("TracingAxiosInterceptor", () => {
     });
 
     it("should persist the subsegment to the request config", () => {
-      interceptorFn(config);
+      interceptorFn(config as TracingConfig);
 
       // @ts-ignore
       expect(config[TRACING_CONFIG_KEY].subSegment).toBe(subSegment);
     });
 
     it("should add the tracing header to the request config", () => {
-      const returnedConfig = interceptorFn(config);
+      const returnedConfig = interceptorFn(config as TracingConfig);
 
       expect(tracingService.getTracingHeader).toHaveBeenCalledTimes(1);
       expect(tracingService.getTracingHeader).toHaveBeenCalledWith(subSegment);
@@ -120,7 +123,7 @@ describe("TracingAxiosInterceptor", () => {
         throw new TracingNotInitializedException();
       });
 
-      const returnedConfig = interceptorFn(config);
+      const returnedConfig = interceptorFn(config as TracingConfig);
       expect(returnedConfig).toEqual(config);
     });
   });
@@ -148,7 +151,8 @@ describe("TracingAxiosInterceptor", () => {
         [TRACING_CONFIG_KEY]: {
           subSegment,
         },
-      } as AxiosRequestConfig;
+        headers: new AxiosHeaders({}),
+      } as InternalAxiosRequestConfig;
     });
 
     it("should add the error data to the subsegment", () => {
@@ -291,7 +295,8 @@ describe("TracingAxiosInterceptor", () => {
         [TRACING_CONFIG_KEY]: {
           subSegment,
         },
-      } as AxiosRequestConfig;
+        headers: new AxiosHeaders({}),
+      } as InternalAxiosRequestConfig;
     });
 
     it("should do nothing if no subsegment is returned", () => {
