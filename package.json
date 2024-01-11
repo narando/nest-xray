@@ -1,6 +1,6 @@
 {
   "name": "@therealmkadmi/nest-xray",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Distributed tracing for Nestjs with AWS X-Ray",
   "author": "Julian Tölle <julian@narando.de>",
   "license": "MIT",

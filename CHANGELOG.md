@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/TheRealMkadmi/nest-xray/compare/v1.0.1...v1.0.2) (2024-01-11)
+
+
+### Bug Fixes
+
+* **package.json:** remove support for nestjs 8 and add support for @nestjs/axios ^3.0.0 ([a24b890](https://github.com/TheRealMkadmi/nest-xray/commit/a24b890ff52d72a3df8afbb965c13bb99900bcf5))
+
 ## [1.0.1](https://github.com/TheRealMkadmi/nest-xray/compare/v1.0.0...v1.0.1) (2024-01-10)
 
 
