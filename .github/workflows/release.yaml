@@ -15,7 +15,7 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: 16.x
+          node-version: 18.x
 
       - run: npm ci
 
@@ -23,7 +23,7 @@ jobs:
 
       # needed for npm publishing
       - run: npm run build
-
+      - run: npm config set access public
       - run: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

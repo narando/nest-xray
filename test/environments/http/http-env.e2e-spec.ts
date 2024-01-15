@@ -70,7 +70,7 @@ describe("HttpEnvironment (e2e)", () => {
     expect(sendSegment).toHaveBeenLastCalledWith(
       expect.objectContaining({
         name: "http-env-e2e-test",
-        service: expect.objectContaining({ name: "@narando/nest-xray" }),
+        service: expect.objectContaining({ name: "@therealmkadmi/nest-xray" }),
         http: expect.objectContaining({
           request: expect.objectContaining({
             client_ip: "::ffff:127.0.0.1",
